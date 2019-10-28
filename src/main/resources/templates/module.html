@@ -5,7 +5,7 @@
 <head th:fragment="head" id="head">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>PA</title>
+    <title>V Platform</title>
 
     <!-- Toggles CSS -->
     <link th:href="@{/deepor/vendors/jquery-toggles/css/toggles.css}" rel="stylesheet" type="text/css">
@@ -19,8 +19,127 @@
 
     <!--Agent css-->
     <link rel="stylesheet" th:href="@{/agent.css}">
-
-
 </head>
-<div></div>
+
+<!-- Top Navbar -->
+<nav th:fragment="top" id="top" class="navbar navbar-expand-xl navbar-light fixed-top hk-navbar">
+    <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><i class="ion ion-ios-menu"></i></a>
+    <a class="navbar-brand" href="#">
+        <img class="brand-img d-inline-block mr-5" src="/img/logo.png" alt="brand" />代理分销平台
+    </a>
+    <ul class="navbar-nav hk-navbar-content">
+        <li class="nav-item dropdown dropdown-authentication">
+            <a class="nav-link dropdown-toggle no-caret" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="media">
+                    <div class="media-img-wrap">
+                        <div class="avatar">
+                            <img src="/img/head.jpg" alt="user" class="avatar-img rounded-circle">
+                        </div>
+                        <!--<span class="badge badge-success badge-indicator"></span>-->
+                    </div>
+                    <div class="media-body">
+                        <span>Vike0906<i class="zmdi zmdi-chevron-down"></i></span>
+                    </div>
+                </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
+                <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-account"></i><span>首页</span></a>
+                <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-settings"></i><span>修改密码</span></a>
+                <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-power"></i><span>退出登陆</span></a>
+            </div>
+        </li>
+    </ul>
+</nav>
+<!-- /Top Navbar -->
+
+
+<!-- Vertical Nav -->
+<nav th:fragment="menu" class="hk-nav hk-nav-light">
+    <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
+    <div class="nicescroll-bar">
+        <div class="navbar-nav-wrap">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
+                        <i class="ion ion-ios-keypad"></i>
+                        <span class="nav-link-text">市场营销</span>
+                    </a>
+                    <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                        <li class="nav-item">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">代理管理</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">订单管理</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">提现管理</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#user">
+                        <i class="ion ion-ios-construct"></i>
+                        <span class="nav-link-text">系统管理</span>
+                    </a>
+                    <ul id="user" class="nav flex-column collapse collapse-level-1">
+                        <li class="nav-item">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">用户管理</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<!-- /Vertical Nav -->
+
+<!-- Vertical Nav Dynamic-->
+<nav th:fragment="menu-dynamic(menus)" class="hk-nav hk-nav-light">
+    <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
+    <div class="nicescroll-bar">
+        <div class="navbar-nav-wrap">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item" th:each="parent,state:${menus}">
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" th:data-target="'#dash_drp-'${state.count}">
+                        <i th:class="${parent.icons}"></i>
+                        <span class="nav-link-text" th:text="${parent.name}"></span>
+                    </a>
+                    <ul th:id="'#dash_drp-'${state.count}" class="nav flex-column collapse collapse-level-1">
+                        <li class="nav-item">
+                            <ul class="nav flex-column">
+                                <li class="nav-item" th:each="sub,subState:${parent.subMenus}">
+                                    <a class="nav-link" th:href="${sub.url}" th:text="${sub.name}"></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<!-- /Vertical Nav Dynamic-->
+
+<!-- Footer -->
+<div th:fragment="foot" class="hk-footer-wrap container">
+    <footer class="footer">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <p style="text-align: center">Pampered by<a href="#" class="text-dark" >Vike0906</a> © 2019</p>
+            </div>
+        </div>
+    </footer>
+</div>
+<!-- /Footer -->
+
 </html>

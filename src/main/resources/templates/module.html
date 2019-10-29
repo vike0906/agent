@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>V Platform</title>
-
+    <!--<link th:href="@{/deepor/dist/css/bootstrap.min.css}" rel="stylesheet" type="text/css">-->
     <!-- Toggles CSS -->
     <link th:href="@{/deepor/vendors/jquery-toggles/css/toggles.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/deepor/vendors/jquery-toggles/css/themes/toggles-light.css}" rel="stylesheet" type="text/css">
@@ -18,14 +18,14 @@
     <link th:href="@{/deepor/dist/css/style.css}" rel="stylesheet" type="text/css">
 
     <!--Agent css-->
-    <link rel="stylesheet" th:href="@{/agent.css}">
+    <link rel="stylesheet" th:href="@{/agent/agent.css}">
 </head>
 
 <!-- Top Navbar -->
 <nav th:fragment="top" id="top" class="navbar navbar-expand-xl navbar-light fixed-top hk-navbar">
     <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><i class="ion ion-ios-menu"></i></a>
     <a class="navbar-brand" href="#">
-        <img class="brand-img d-inline-block mr-5" src="/img/logo.png" alt="brand" />代理分销平台
+        <img class="brand-img d-inline-block mr-5" src="/img/logo.png" alt="brand" />管理系统
     </a>
     <ul class="navbar-nav hk-navbar-content">
         <li class="nav-item dropdown dropdown-authentication">
@@ -44,7 +44,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
                 <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-account"></i><span>首页</span></a>
-                <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-settings"></i><span>修改密码</span></a>
+                <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-edit"></i><span>修改密码</span></a>
                 <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-power"></i><span>退出登陆</span></a>
             </div>
         </li>
@@ -81,15 +81,42 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#user">
-                        <i class="ion ion-ios-construct"></i>
-                        <span class="nav-link-text">系统管理</span>
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#way">
+                        <i class="ion ion-ios-people"></i>
+                        <span class="nav-link-text">渠道管理</span>
                     </a>
-                    <ul id="user" class="nav flex-column collapse collapse-level-1">
+                    <ul id="way" class="nav flex-column collapse collapse-level-1">
                         <li class="nav-item">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">用户管理</a>
+                                    <a class="nav-link" href="#">代理管理</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">订单管理</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">提现管理</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#sys">
+                        <i class="ion ion-ios-settings"></i>
+                        <span class="nav-link-text">系统管理</span>
+                    </a>
+                    <ul id="sys" class="nav flex-column collapse collapse-level-1">
+                        <li class="nav-item">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" onclick="indexView('/system/users')">用户管理</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">角色管理</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">菜单管理</a>
                                 </li>
                             </ul>
                         </li>
@@ -104,7 +131,7 @@
 
 <!-- Vertical Nav Dynamic-->
 <nav th:fragment="menu-dynamic(menus)" class="hk-nav hk-nav-light">
-    <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
+    <a href="javascript:void(0);" id="hk_nav_close——" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
     <div class="nicescroll-bar">
         <div class="navbar-nav-wrap">
             <ul class="navbar-nav flex-column">
@@ -129,7 +156,85 @@
     </div>
 </nav>
 <!-- /Vertical Nav Dynamic-->
+<!-- main -->
+<div th:fragment="main">
+<div class="hk-row">
+    <div class="col-lg-3 col-md-6">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-5">
+                    <div>
+                        <span class="d-block font-15 text-dark font-weight-500">Users</span>
+                    </div>
+                    <div>
+                        <span class="text-success font-14 font-weight-500">+10%</span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <span class="d-block display-4 text-dark mb-5">36.1K</span>
+                    <small class="d-block">172,458 Target Users</small>
+                </div>
+            </div>
+        </div>
 
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-5">
+                    <div>
+                        <span class="d-block font-15 text-dark font-weight-500">Campaign Leads</span>
+                    </div>
+                    <div>
+                        <span class="text-success font-14 font-weight-500">+12.5%</span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <span class="d-block display-4 text-dark mb-5"><span class="counter-anim">168,856</span></span>
+                    <small class="d-block">472,458 Targeted</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-5">
+                    <div>
+                        <span class="d-block font-15 text-dark font-weight-500">New Contacts</span>
+                    </div>
+                    <div>
+                        <span class="text-warning font-14 font-weight-500">-2.8%</span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <span class="d-block display-4 text-dark mb-5">73</span>
+                    <small class="d-block">100 Targeted</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-5">
+                    <div>
+                        <span class="d-block font-15 text-dark font-weight-500">Win/Loss Ratio</span>
+                    </div>
+                    <div>
+                        <span class="text-danger font-14 font-weight-500">-75%</span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <span class="d-block display-4 text-dark mb-5">48:65</span>
+                    <small class="d-block">42:32 Targeted</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- main -->
 <!-- Footer -->
 <div th:fragment="foot" class="hk-footer-wrap container">
     <footer class="footer">

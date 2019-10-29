@@ -59,6 +59,65 @@ function changeUser(userId, type) {
     });
 }
 
+function addRole() {
+    var name = $("#roleName").val();
+    if(name.length==0){
+        alertInfo('角色名称为空');
+        return;
+    }
+    var params = {name:name};
+    $('#addRoleModal').modal('hide');
+    ajaxPost('/system/add-role',params,function (data) {
+        if(data.code==0){
+            alter(data.message);
+        }else{
+            alter(data.message);
+        }
+    });
+}
+
+function addPermission() {
+    var name = $("#permissionName").val();
+    var url = $("#url").val();
+    var parentId = $("#parentId").val();
+    if(name.length==0){
+        alertInfo('菜单名为空');
+        return;
+    }
+    if(url.length==0){
+        alertInfo('路由为空');
+        return;
+    }
+    if(parentId.length==0){
+        alertInfo('请选择主菜单');
+        return;
+    }
+    var params = {name:name,url:url,parentId:parentId};
+    $('#addPermissionModal').modal('hide');
+    ajaxPost('/system/add-permissions',params,function (data) {
+        if(data.code==0){
+            alter(data.message);
+        }else{
+            alter(data.message);
+        }
+    });
+}
+
+function deletePermisson(id) {
+    agentConfirm('确定删除此菜单？',function () {
+        $('#confirmModal').modal('hide');
+        $('#confirmButton').unbind();
+        params = {id:id};
+        ajaxPost('/system/delete-permissions',params,function (data) {
+            if(data.code==0){
+                alter('删除成功');
+            }else {
+                alter('删除失败');
+            }
+        });
+    });
+}
+
 
 
 

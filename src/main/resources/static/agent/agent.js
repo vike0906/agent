@@ -41,6 +41,10 @@ function alter(message) {
     $('#alterModal').modal('show');
 }
 
+function messageReload() {
+    location.reload();
+}
+
 function agentConfirm(message, confirm) {
     $('#confirmModalMessage').html(message);
     $('#confirmButton').click(confirm);

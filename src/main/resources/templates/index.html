@@ -13,7 +13,8 @@
             <div class="container-fluid mt-xl-50 mt-sm-30 mt-15">
                 <!-- Row -->
                 <div class="row">
-                    <div class="col-xl-12" th:include="module::main"></div>
+                    <input id="viewSelect" th:value="${url}" hidden="hidden">
+                    <div class="col-xl-12"></div>
                 </div>
                 <!-- /Row -->
             </div>
@@ -25,83 +26,23 @@
 
     </div>
     <!-- /HK Wrapper -->
-    <!-- message -->
-    <div class="modal fade" id="alterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle1">信息</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h6 id="alterModalMessage"></h6>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- confirm -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle2">信息</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h6 id="confirmModalMessage"></h6>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-danger"  id="confirmButton">确认</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- jQuery -->
-    <script src="/deepor/vendors/jquery/dist/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/deepor/vendors/popper.js/dist/umd/popper.min.js"></script>
-    <script src="/deepor/dist/js/bootstrap.min.js"></script>
-
-    <!-- Slimscroll JavaScript -->
-    <script src="/deepor/dist/js/jquery.slimscroll.js"></script>
-
-    <!-- Fancy Dropdown JS -->
-    <script src="/deepor/dist/js/dropdown-bootstrap-extended.js"></script>
-
-    <!-- FeatherIcons JavaScript -->
-    <script src="/deepor/dist/js/feather.min.js"></script>
-
-    <!-- Toggles JavaScript -->
-    <script src="/deepor/vendors/jquery-toggles/toggles.min.js"></script>
-    <script src="/deepor/dist/js/toggle-data.js"></script>
-
-    <!-- Counter Animation JavaScript -->
-    <script src="/deepor/vendors/waypoints/lib/jquery.waypoints.min.js"></script>
-    <script src="/deepor/vendors/jquery.counterup/jquery.counterup.min.js"></script>
-
-    <!-- Sparkline JavaScript -->
-    <script src="/deepor/vendors/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
-
-    <!-- Owl JavaScript -->
-    <script src="/deepor/vendors/owl.carousel/dist/owl.carousel.min.js"></script>
-
-    <!-- Toastr JS -->
-    <script src="/deepor/vendors/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+    <div th:replace="module::alterModal"></div>
+    <div th:replace="module::confirmModal"></div>
 
     <!-- Init JavaScript -->
     <script src="/deepor/dist/js/init.js"></script>
-    <script src="agent/agent.js"></script>
-    <script src="agent/user.js"></script>
+    <script src="/agent/agent.js"></script>
+    <script src="/agent/user.js"></script>
+<script>
+    window.onload=function(){
+        var url = $('#viewSelect').val();
+        if(url.length==0){
+            indexView('/view/main');
+        }else {
+            indexView(url);
+        }
+    }
+</script>
 </body>
 
 </html>

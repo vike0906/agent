@@ -36,6 +36,7 @@ public class SystemController {
         map.addAttribute("page",page);
         map.addAttribute("roles",roles);
         return "sys/user::user";
+
     }
 
     @PostMapping("add-user")
@@ -73,10 +74,39 @@ public class SystemController {
         return "sys/role::role";
     }
 
+    @PostMapping("add-role")
+    @ResponseBody
+    public Response addRole(@RequestParam String name){
+        SysRole sysRole = systemService.saveRole(name);
+        if(sysRole!=null){
+            return new Response(Response.SUCCESS,"添加成功");
+        }
+        return new Response(Response.ERROR,"未添加");
+    }
+
     @GetMapping("permissions")
     public String permissions(ModelMap map, PageLimit pageLimit){
         Page<SysPermission> page = systemService.findPermissions(pageLimit);
+        List<SysPermission> sysPermissions = systemService.findSysPermission();
+        map.addAttribute("sysPermissions",sysPermissions);
         map.addAttribute("page",page);
         return "sys/permission::permission";
+    }
+
+    @PostMapping("add-permissions")
+    @ResponseBody
+    public Response addPermissions(@RequestParam String name, @RequestParam String url, @RequestParam Long parentId){
+        SysPermission sysPermission = systemService.savePermission(name, url, parentId);
+        if(sysPermission!=null){
+            return new Response(Response.SUCCESS,"添加成功");
+        }
+        return new Response(Response.ERROR,"未添加");
+    }
+
+    @PostMapping("delete-permissions")
+    @ResponseBody
+    public Response deletePermissions(@RequestParam Long id){
+        systemService.deletePermission(id);
+        return new Response(Response.SUCCESS,"已删除");
     }
 }

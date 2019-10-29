@@ -4,7 +4,74 @@
 <body>
 
 <div th:fragment="role">
+    <div class="hk-row">
+        <div class="col-12">
+            <section class="hk-sec-wrapper">
+                <!--<button class="btn btn-rounded btn-primary btn-sm hk-sec-title">新增用户</button>-->
+                <a class="btn btn-light btn-sm hk-sec-title" style="width: 6rem;" data-toggle="modal" data-target="#addRoleModal">
+                    <i class="ion ion-md-add-circle"></i><span> 增加角色</span>
+                </a>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <caption>系统角色信息</caption>
+                            <thead class="thead-light">
+                            <tr>
+                                <th>序号</th>
+                                <th>角色名称</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
+                            <tr th:each="role,state : ${page.content}">
+                                <td th:text="${state.count}"></td>
+                                <td th:text="${role.name}"></td>
+                                <td th:text="${#dates.format(role.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td align="center" >
+                                    <button class="btn btn-light btn-sm" onclick="">编辑权限</button>
+                                        <!--<a th:case="9" class="btn btn-light btn-sm" th:onclick="'changeUser('+${user.id}+', 2)'">-->
+                                            <!--<i class="glyphicon glyphicon-ok"></i><span> 启用</span>-->
+                                        <!--</a>-->
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">添加角色</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger fade show" role="alert" hidden="hidden" id="alertInfo" style="text-align: center"></div>
+                    <form>
+                        <div class="form-group row">
+                            <label for="roleName" class="col-sm-3 col-form-label">角色名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="roleName" placeholder="请输入角色名称">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" onclick="addRole()">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

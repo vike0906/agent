@@ -43,6 +43,10 @@ public class PageLimit implements Serializable {
         return PageRequest.of(this.pageNo-1, this.limit);
     }
 
+    public PageRequest page(Sort sort){
+        return PageRequest.of(this.pageNo-1, this.limit, sort);
+    }
+
     public PageRequest page(String property){
         return page(true, property);
     }

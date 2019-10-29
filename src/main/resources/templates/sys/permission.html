@@ -4,7 +4,99 @@
 <body>
 
 <div th:fragment="permission">
+    <div class="hk-row">
+        <div class="col-12">
+            <section class="hk-sec-wrapper">
+                <!--<button class="btn btn-rounded btn-primary btn-sm hk-sec-title">新增用户</button>-->
+                <a class="btn btn-light btn-sm hk-sec-title" style="width: 6rem;" data-toggle="modal" data-target="#addPermissionModal">
+                    <i class="ion ion-md-add-circle"></i><span> 增加菜单</span>
+                </a>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <caption>系统菜单信息</caption>
+                            <thead class="thead-light">
+                            <tr>
+                                <th>序号</th>
+                                <th>菜单名称</th>
+                                <th>路由</th>
+                                <th>类别</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
+                            <tr th:each="menu,state : ${page.content}">
+                                <td th:text="${state.count}"></td>
+                                <td th:text="${menu.name}"></td>
+                                <td th:text="${menu.url}?:'#'"></td>
+                                <td th:switch="${menu.parentId}">
+                                    <span th:case="0" style="color: green">主菜单</span>
+                                    <span th:case="*" style="color: yellowgreen">子菜单</span>
+                                </td>
+                                <td th:text="${#dates.format(menu.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td align="center" th:if="${menu.parentId eq 0}">
+                                    <span>不可操作</span>
+                                </td>
+                                <td align="center" th:unless="${menu.parentId eq 0}">
+                                    <button class="btn btn-danger btn-sm" th:onclick="'deletePermisson('+${menu.id}+')'">删除菜单</button>
+                                    <!--<a th:case="9" class="btn btn-light btn-sm" th:onclick="'changeUser('+${user.id}+', 2)'">-->
+                                    <!--<i class="glyphicon glyphicon-ok"></i><span> 启用</span>-->
+                                    <!--</a>-->
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addPermissionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">添加子菜单</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger fade show" role="alert" hidden="hidden" id="alertInfo" style="text-align: center"></div>
+                    <form>
+                        <div class="form-group row">
+                            <label for="permissionName" class="col-sm-3 col-form-label">菜单名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="permissionName" placeholder="请输入菜单名">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="url" class="col-sm-3 col-form-label">路由</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="url" placeholder="请输入菜单路由">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="parentId" class="col-sm-3 col-form-label">主菜单</label>
+                            <div class="col-sm-8">
+                                <select id="parentId" name="parentId" class="form-control">
+                                    <option value="">请选择</option>
+                                    <option th:each="permission:${sysPermissions}" th:value="${permission.id}" th:text="${permission.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" onclick="addPermission()">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

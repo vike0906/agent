@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: lsl
@@ -36,10 +37,19 @@ public class SysPermission {
     @Column(name = "level")
     private int level;
 
+    @Column(name = "sort")
+    private int sort;
+
     @Column(name = "parent_id")
     private long parentId;
 
     @Column(name = "create_time")
     private Date createTime;
+
+    @Transient
+    private List<SysPermission> sub;
+
+    @Transient
+    private int isActive;
 
 }

@@ -8,15 +8,18 @@ import com.vike.agent.dao.SysRoleRepository;
 import com.vike.agent.dao.SysUserRepository;
 import com.vike.agent.entity.SysPermission;
 import com.vike.agent.entity.SysRole;
+import com.vike.agent.entity.SysRolePermission;
 import com.vike.agent.entity.SysUser;
 import com.vike.agent.service.SystemService;
 import com.vike.agent.utils.EncryptUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.relation.Role;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,11 +96,53 @@ public class SystemServiceImpl implements SystemService {
         return sysRoleRepository.findAllItem();
     }
 
+    @Override
+    @Transactional
+    public SysRole saveRole(String name) {
+        SysRole sysRole = new SysRole();
+        sysRole.setName(name);
+        SysRole save = sysRoleRepository.save(sysRole);
+        List<SysPermission> list = sysPermissionRepository.findAll();
+        List<SysRolePermission> list1 = new ArrayList<>(list.size());
+        for(SysPermission s:list){
+            SysRolePermission sysRolePermission = new SysRolePermission();
+            sysRolePermission.setRoleId(save.getId()).setPermissionId(s.getId()).setStatus(GloableConstant.CANCEL_STATUS);
+            list1.add(sysRolePermission);
+        }
+        sysRolePermissionRepository.saveAll(list1);
+        return save;
+    }
+
 
     @Override
     public Page<SysPermission> findPermissions(PageLimit pageLimit) {
+        Sort sort = Sort.by(Sort.Direction.ASC,"sort").and(Sort.by(Sort.Direction.ASC,"createTime"));
+        return sysPermissionRepository.findAll(pageLimit.page(sort));
 
-        return sysPermissionRepository.findAll(pageLimit.page("createTime"));
+    }
 
+    @Override
+    public List<SysPermission> findSysPermission() {
+        return sysPermissionRepository.findAllByParentId();
+    }
+
+    @Override
+    @Transactional
+    public SysPermission savePermission(String name, String url, long parentId) {
+        Optional<SysPermission> op = sysPermissionRepository.findById(parentId);
+        if(op.isPresent()){
+            SysPermission sysPermission = op.get();
+            SysPermission sysPermissionNew = new SysPermission();
+            sysPermissionNew.setName(name).setUrl(url).setParentId(sysPermission.getId())
+                    .setLevel(sysPermission.getLevel()).setSort(sysPermission.getSort());
+            return sysPermissionRepository.save(sysPermissionNew);
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void deletePermission(long id) {
+        sysPermissionRepository.deleteById(id);
     }
 }

@@ -28,5 +28,13 @@ public interface SystemService {
 
     List<SysRole> findRoles();
 
+    SysRole saveRole(String name);
+
     Page<SysPermission> findPermissions(PageLimit pageLimit);
+
+    List<SysPermission> findSysPermission();
+
+    SysPermission savePermission(String name, String url, long parentId);
+
+    void deletePermission(long id);
 }

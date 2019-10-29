@@ -19,6 +19,39 @@
 
     <!--Agent css-->
     <link rel="stylesheet" th:href="@{/agent/agent.css}">
+
+    <!-- jQuery -->
+    <script src="/deepor/vendors/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/deepor/vendors/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/deepor/dist/js/bootstrap.min.js"></script>
+
+    <!-- Slimscroll JavaScript -->
+    <script src="/deepor/dist/js/jquery.slimscroll.js"></script>
+
+    <!-- Fancy Dropdown JS -->
+    <script src="/deepor/dist/js/dropdown-bootstrap-extended.js"></script>
+
+    <!-- FeatherIcons JavaScript -->
+    <script src="/deepor/dist/js/feather.min.js"></script>
+
+    <!-- Toggles JavaScript -->
+    <script src="/deepor/vendors/jquery-toggles/toggles.min.js"></script>
+    <script src="/deepor/dist/js/toggle-data.js"></script>
+
+    <!-- Counter Animation JavaScript -->
+    <script src="/deepor/vendors/waypoints/lib/jquery.waypoints.min.js"></script>
+    <script src="/deepor/vendors/jquery.counterup/jquery.counterup.min.js"></script>
+
+    <!-- Sparkline JavaScript -->
+    <script src="/deepor/vendors/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
+
+    <!-- Owl JavaScript -->
+    <script src="/deepor/vendors/owl.carousel/dist/owl.carousel.min.js"></script>
+
+    <!-- Toastr JS -->
+    <script src="/deepor/vendors/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
 </head>
 
 <!-- Top Navbar -->
@@ -102,21 +135,21 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#sys">
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#sys" aria-expanded="true">
                         <i class="ion ion-ios-settings"></i>
                         <span class="nav-link-text">系统管理</span>
                     </a>
-                    <ul id="sys" class="nav flex-column collapse collapse-level-1">
+                    <ul id="sys" class="nav flex-column collapse collapse-level-1 show">
                         <li class="nav-item">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#" onclick="indexView('/system/users')">用户管理</a>
+                                    <a class="nav-link active" href="/view/system/users">用户管理</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">角色管理</a>
+                                    <a class="nav-link" href="/view/system/roles">角色管理</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">菜单管理</a>
+                                    <a class="nav-link" href="/view/system/permissions">菜单管理</a>
                                 </li>
                             </ul>
                         </li>
@@ -235,6 +268,46 @@
 </div>
 </div>
 <!-- main -->
+<!-- message -->
+<div th:fragment="alterModal" class="modal fade" id="alterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle1">信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6 id="alterModalMessage"></h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="alterButton" class="btn btn-secondary" data-dismiss="modal" onclick="messageReload()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- confirm -->
+<div th:fragment="confirmModal" class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle2">信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6 id="confirmModalMessage"></h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger"  id="confirmButton">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Footer -->
 <div th:fragment="foot" class="hk-footer-wrap container">
     <footer class="footer">

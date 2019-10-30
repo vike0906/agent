@@ -49,11 +49,18 @@
     <script src="/deepor/js/popper.min.js"></script>
     <script src="/deepor/js/bootstrap.min.js"></script>
 
+    <!-- FeatherIcons JavaScript -->
+    <script src="/deepor/js/feather.min.js"></script>
+
     <!-- Toast JavaScript -->
     <script src="/deepor/js/jquery.toast.min.js"></script>
 
 <script>
     $(document).ready(function () {
+        var featherIcon = $('.feather-icon');
+        if( featherIcon.length > 0 ){
+            feather.replace();
+        }
         height = window.innerHeight;
         width = window.innerWidth;
         $('.full-height').css('height', (height));

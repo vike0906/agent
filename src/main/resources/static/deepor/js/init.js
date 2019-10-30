@@ -67,6 +67,10 @@ var deepor = function(){
 		$(window).trigger( "resize" );
 		return false;
 	});
+    $(document).on('click', '#hk_nav_backdrop,#hk_nav_close', function (e) {
+        $wrapper.removeClass('hk-nav-toggle');
+        return false;
+    });
 
 
 	/*Refresh Init Js*/

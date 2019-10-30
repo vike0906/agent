@@ -6,6 +6,7 @@
 	<div class="hk-wrapper hk-vertical-nav">
 		<div th:replace="module::top"></div>
 		<div th:replace="module::menu"></div>
+        <div id="hk_nav_backdrop" class="hk-nav-backdrop"></div>
         <!-- Main Content -->
         <div class="hk-pg-wrapper">
 			<!-- Container -->
@@ -102,6 +103,7 @@
     <!-- /HK Wrapper -->
     <div th:replace="module::alterModal"></div>
     <div th:replace="module::confirmModal"></div>
+    <div th:replace="module::changePasswordModal"></div>
 
     <!-- jQuery -->
     <script src="/deepor/js/jquery.min.js"></script>
@@ -120,6 +122,9 @@
     <!-- Counter Animation JavaScript -->
     <script src="/deepor/js/jquery.waypoints.min.js"></script>
     <script src="/deepor/js/jquery.counterup.min.js"></script>
+
+    <!-- Toast JavaScript -->
+    <script src="/deepor/js/jquery.toast.min.js"></script>
 
     <!-- Init JavaScript -->
     <script src="/deepor/js/init.js"></script>

@@ -2,14 +2,8 @@ package com.vike.agent.service.serviceImpl;
 
 import com.vike.agent.common.GloableConstant;
 import com.vike.agent.common.PageLimit;
-import com.vike.agent.dao.SysPermissionRepository;
-import com.vike.agent.dao.SysRolePermissionRepository;
-import com.vike.agent.dao.SysRoleRepository;
-import com.vike.agent.dao.SysUserRepository;
-import com.vike.agent.entity.SysPermission;
-import com.vike.agent.entity.SysRole;
-import com.vike.agent.entity.SysRolePermission;
-import com.vike.agent.entity.SysUser;
+import com.vike.agent.dao.*;
+import com.vike.agent.entity.*;
 import com.vike.agent.service.SystemService;
 import com.vike.agent.utils.EncryptUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +34,8 @@ public class SystemServiceImpl implements SystemService {
     SysRolePermissionRepository sysRolePermissionRepository;
     @Autowired
     SysPermissionRepository sysPermissionRepository;
+    @Autowired
+    SysPermissionVoRepository sysPermissionVoRepository;
 
     @Override
     public Page<SysUser> findUsers(PageLimit pageLimit) {
@@ -111,6 +107,33 @@ public class SystemServiceImpl implements SystemService {
         }
         sysRolePermissionRepository.saveAll(list1);
         return save;
+    }
+
+    @Override
+    public List<SysPermissionVo> findPermissionForEditRole(long roleId) {
+        return sysPermissionVoRepository.findAllByRoleId(roleId);
+    }
+
+    @Override
+    public String editRole(long id, int type) {
+        Optional<SysRolePermission> op = sysRolePermissionRepository.findById(id);
+        if(!op.isPresent()){
+            return "编辑失败";
+        }
+        SysRolePermission rolePermission = op.get();
+        if(type==1){
+            if(rolePermission.getStatus()!=GloableConstant.CANCEL_STATUS){
+                return "状态错误，编辑失败";
+            }
+            rolePermission.setStatus(GloableConstant.NORMALL_STATUS);
+        }else if(type==2){
+            if(rolePermission.getStatus()!=GloableConstant.NORMALL_STATUS){
+                return "状态错误，编辑失败";
+            }
+            rolePermission.setStatus(GloableConstant.CANCEL_STATUS);
+        }
+        sysRolePermissionRepository.save(rolePermission);
+        return null;
     }
 
 

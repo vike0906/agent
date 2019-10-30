@@ -76,6 +76,21 @@ function addRole() {
     });
 }
 
+function editRole(id) {
+    ajaxGet('/system/role-permissions?roleId='+id, function (response) {
+        if(response.code==0){
+            var trBody = '';
+            response.data.forEach(function (a) {
+                trBody=trBody+'<tr><td>'+a.name+'</td><td>'+a.url+'</td><td>'+a.status+'</td><td>'+a.rpId+'</td></tr>'
+            });
+            $("#editRoleTableBody").html(trBody);
+            $("#editRoleModal").modal('show');
+        }else{
+            alter(data.message);
+        }
+    });
+}
+
 function addPermission() {
     var name = $("#permissionName").val();
     var url = $("#url").val();

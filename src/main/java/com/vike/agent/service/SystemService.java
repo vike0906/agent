@@ -2,6 +2,7 @@ package com.vike.agent.service;
 
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.entity.SysPermission;
+import com.vike.agent.entity.SysPermissionVo;
 import com.vike.agent.entity.SysRole;
 import com.vike.agent.entity.SysUser;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,10 @@ public interface SystemService {
     List<SysRole> findRoles();
 
     SysRole saveRole(String name);
+
+    List<SysPermissionVo> findPermissionForEditRole(long roleId);
+
+    String editRole(long id, int type);
 
     Page<SysPermission> findPermissions(PageLimit pageLimit);
 

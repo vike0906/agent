@@ -3,6 +3,7 @@ package com.vike.agent.controller;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.common.Response;
 import com.vike.agent.entity.SysPermission;
+import com.vike.agent.entity.SysPermissionVo;
 import com.vike.agent.entity.SysRole;
 import com.vike.agent.entity.SysUser;
 import com.vike.agent.service.SystemService;
@@ -82,6 +83,23 @@ public class SystemController {
             return new Response(Response.SUCCESS,"添加成功");
         }
         return new Response(Response.ERROR,"未添加");
+    }
+
+    @GetMapping("role-permissions")
+    @ResponseBody
+    public Response<List<SysPermissionVo>> rolePermission(@RequestParam Long roleId){
+        List<SysPermissionVo> permissionForEditRole = systemService.findPermissionForEditRole(roleId);
+        return new Response<>(Response.SUCCESS,"success",permissionForEditRole);
+    }
+
+    @PostMapping("edit-role")
+    @ResponseBody
+    public Response editRole(@RequestParam Long id,@RequestParam int type){
+        String s = systemService.editRole(id, type);
+        if(s==null){
+            return new Response(Response.SUCCESS,"编辑成功");
+        }
+        return new Response(Response.ERROR,s);
     }
 
     @GetMapping("permissions")

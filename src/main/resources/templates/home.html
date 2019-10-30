@@ -5,7 +5,8 @@
 	<!-- HK Wrapper -->
 	<div class="hk-wrapper hk-vertical-nav">
 		<div th:replace="module::top"></div>
-		<div th:replace="module::menu"></div>
+		<div th:replace="module::menu-dynamic(menus=${menus})"></div>
+        <div id="hk_nav_backdrop" class="hk-nav-backdrop"></div>
         <!-- Main Content -->
         <div class="hk-pg-wrapper">
 			<!-- Container -->
@@ -27,6 +28,7 @@
     <!-- /HK Wrapper -->
     <div th:replace="module::alterModal"></div>
     <div th:replace="module::confirmModal"></div>
+    <div th:replace="module::changePasswordModal"></div>
 
     <!-- jQuery -->
     <script src="/deepor/js/jquery.min.js"></script>

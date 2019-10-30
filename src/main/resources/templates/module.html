@@ -30,38 +30,37 @@
                         <!--<span class="badge badge-success badge-indicator"></span>-->
                     </div>
                     <div class="media-body">
-                        <span>Vike0906<i class="zmdi zmdi-chevron-down"></i></span>
+                        <span th:text="${userName}"></span><span><i class="zmdi zmdi-chevron-down"></i></span>
                     </div>
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
-                <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-account"></i><span>首页</span></a>
-                <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-edit"></i><span>修改密码</span></a>
-                <a class="dropdown-item" href="#"><i class="dropdown-icon zmdi zmdi-power"></i><span>退出登陆</span></a>
+                <a class="dropdown-item" href="/index"><i class="dropdown-icon zmdi zmdi-account"></i><span>首页</span></a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#changePasswordModal"><i class="dropdown-icon zmdi zmdi-edit"></i><span>修改密码</span></a>
+                <a class="dropdown-item" href="/logout"><i class="dropdown-icon zmdi zmdi-power"></i><span>退出登陆</span></a>
             </div>
         </li>
     </ul>
+
 </nav>
 <!-- /Top Navbar -->
 
 
 <!-- Vertical Nav -->
 <nav th:fragment="menu" class="hk-nav hk-nav-light">
+    <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
     <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
     <div class="nicescroll-bar">
         <div class="navbar-nav-wrap">
             <ul class="navbar-nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
-                        <i class="ion ion-ios-keypad"></i>
-                        <span class="nav-link-text">市场营销</span>
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#way">
+                        <i class="ion ion-ios-people"></i>
+                        <span class="nav-link-text">渠道管理</span>
                     </a>
-                    <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                    <ul id="way" class="nav flex-column collapse collapse-level-1">
                         <li class="nav-item">
                             <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">代理管理</a>
-                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">订单管理</a>
                                 </li>
@@ -73,21 +72,18 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#way">
-                        <i class="ion ion-ios-people"></i>
-                        <span class="nav-link-text">渠道管理</span>
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
+                        <i class="ion ion-ios-stats"></i>
+                        <span class="nav-link-text">数据汇总</span>
                     </a>
-                    <ul id="way" class="nav flex-column collapse collapse-level-1">
+                    <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
                         <li class="nav-item">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">代理管理</a>
+                                    <a class="nav-link" href="#">收益统计</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">订单管理</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">提现管理</a>
+                                    <a class="nav-link" href="#">用户统计</a>
                                 </li>
                             </ul>
                         </li>
@@ -124,20 +120,21 @@
 
 <!-- Vertical Nav Dynamic-->
 <nav th:fragment="menu-dynamic(menus)" class="hk-nav hk-nav-light">
-    <a href="javascript:void(0);" id="hk_nav_close——" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
+    <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
+    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
     <div class="nicescroll-bar">
         <div class="navbar-nav-wrap">
             <ul class="navbar-nav flex-column">
                 <li class="nav-item" th:each="parent,state:${menus}">
-                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" th:data-target="'#dash_drp-'${state.count}">
-                        <i th:class="${parent.icons}"></i>
+                    <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" th:data-target="'#dash_drp-'+${state.count}">
+                        <i th:class="${parent.icon}"></i>
                         <span class="nav-link-text" th:text="${parent.name}"></span>
                     </a>
-                    <ul th:id="'#dash_drp-'${state.count}" class="nav flex-column collapse collapse-level-1">
+                    <ul th:id="'dash_drp-'+${state.count}" class="nav flex-column collapse collapse-level-1" th:classappend="${parent.isActive==1}?'show'">
                         <li class="nav-item">
                             <ul class="nav flex-column">
-                                <li class="nav-item" th:each="sub,subState:${parent.subMenus}">
-                                    <a class="nav-link" th:href="${sub.url}" th:text="${sub.name}"></a>
+                                <li class="nav-item" th:each="subMenu,subState:${parent.sub}" th:classappend="${subMenu.isActive==1}?'active'">
+                                    <a class="nav-link" th:href="'/view'+${subMenu.url}" th:text="${subMenu.name}"></a>
                                 </li>
                             </ul>
                         </li>
@@ -146,6 +143,7 @@
             </ul>
 
         </div>
+    </div>
     </div>
 </nav>
 <!-- /Vertical Nav Dynamic-->
@@ -257,6 +255,48 @@
         </div>
     </div>
 </div>
+<!--Change Password-->
+<!-- Modal -->
+<div th:fragment="changePasswordModal" class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">修改密码</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger fade show" role="alert" hidden="hidden" id="alertInfo" style="text-align: center"></div>
+                <form>
+                    <div class="form-group row">
+                        <label for="oldPassword" class="col-sm-3 col-form-label">原密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="oldPassword" placeholder="请输入原密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="newPassword" class="col-sm-3 col-form-label">新密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="newPassword" placeholder="请输入新密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="newPassword1" class="col-sm-3 col-form-label">确认新密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="newPassword1" placeholder="请再次输入新密码">
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" onclick="changePassword()">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Change Password-->
 <!-- Footer -->
 <div th:fragment="foot" class="hk-footer-wrap container">
     <footer class="footer">

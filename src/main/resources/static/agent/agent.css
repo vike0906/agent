@@ -1,0 +1,12 @@
+.page-link:focus{
+    box-shadow: none;
+}
+.page-link:focus{
+    z-index:2;
+    outline:0;
+    box-shadow:0 0 0 .2rem rgba(227, 225, 226, 0.2)
+}
+.page-item.active .page-link{
+    background-color: #bac3ce;
+    border-color: #c3c7cc;
+}

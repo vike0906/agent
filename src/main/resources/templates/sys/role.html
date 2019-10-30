@@ -30,16 +30,16 @@
                                 <td th:text="${role.name}"></td>
                                 <td th:text="${#dates.format(role.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
                                 <td align="center" >
-                                    <button class="btn btn-light btn-sm" onclick="">编辑权限</button>
-                                        <!--<a th:case="9" class="btn btn-light btn-sm" th:onclick="'changeUser('+${user.id}+', 2)'">-->
-                                            <!--<i class="glyphicon glyphicon-ok"></i><span> 启用</span>-->
-                                        <!--</a>-->
+                                    <a class="btn btn-light btn-sm" >
+                                        <i class="glyphicon glyphicon-pencil"></i><span> 编辑</span>
+                                    </a>
                                 </td>
                             </tr>
 
                             </tbody>
                         </table>
                     </div>
+                    <div th:replace="module::page(total=${page.getTotalPages()},number=${page.getNumber()}+1)"></div>
                 </div>
             </section>
         </div>

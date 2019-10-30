@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="module::head"></div>
+<body>
+<!-- HK Wrapper -->
+<div class="hk-wrapper">
+
+    <!-- Main Content -->
+    <div class="hk-pg-wrapper hk-auth-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 pa-0">
+                    <div class="auth-form-wrap rem-xl-10 rem-5" style="align-items: flex-start">
+                        <div class="auth-form w-xl-20 w-lg-30 w-sm-50 w-100">
+                            <a class="d-flex auth-brand align-items-center justify-content-center  mb-20" href="#">
+                                <img class="brand-img d-inline-block mr-5" src="/img/logo.png" alt="brand" /><span class="text-dark font-23">后台管理</span>
+                            </a>
+                            <form action="/login" method="post" onsubmit="return loginCheck()">
+                                <h1 class="display-4 text-center mb-10">欢迎登陆</h1>
+                                <p class="text-center mb-30">在下方输入登录名和密码</p>
+                                <div class="form-group">
+                                    <input class="form-control" name="loginName" id="loginName" placeholder="登录名" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input class="form-control" name="password" id="password" placeholder="密码" type="password">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><span class="feather-icon"><i data-feather="eye-off"></i></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-warning btn-block" type="submit">登陆</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Main Content -->
+
+</div>
+<!-- /HK Wrapper -->
+
+    <!-- jQuery -->
+    <script src="/deepor/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/deepor/js/popper.min.js"></script>
+    <script src="/deepor/js/bootstrap.min.js"></script>
+
+    <!-- Toast JavaScript -->
+    <script src="/deepor/js/jquery.toast.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        height = window.innerHeight;
+        width = window.innerWidth;
+        $('.full-height').css('height', (height));
+        $('.hk-pg-wrapper').css('min-height', (height));
+    });
+function loginCheck() {
+    var loginName = $('#loginName').val();
+    var password = $('#password').val();
+    if(loginName.length==0){
+        $.toast({
+            text : '请输入登录名',
+            showHideTransition : 'fade',
+            bgColor : '#ee5130',
+            textColor : '#e5eed0',
+            class: 'jq-toast-primary',
+            allowToastClose : false,
+            hideAfter : 2000,
+            stack : 5,
+            textAlign : 'center',
+            position : 'top-center'
+        });
+        return false;
+    }
+    return true;
+
+}
+</script>
+</body>
+
+</html>

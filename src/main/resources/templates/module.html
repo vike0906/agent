@@ -6,52 +6,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>V Platform</title>
-    <!--<link th:href="@{/deepor/dist/css/bootstrap.min.css}" rel="stylesheet" type="text/css">-->
-    <!-- Toggles CSS -->
-    <link th:href="@{/deepor/vendors/jquery-toggles/css/toggles.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/deepor/vendors/jquery-toggles/css/themes/toggles-light.css}" rel="stylesheet" type="text/css">
-
-    <!-- Toastr CSS -->
-    <link th:href="@{/deepor/vendors/jquery-toast-plugin/dist/jquery.toast.min.css}" rel="stylesheet" type="text/css">
-
     <!-- Custom CSS -->
-    <link th:href="@{/deepor/dist/css/style.css}" rel="stylesheet" type="text/css">
+    <link href="/deepor/css/style.css" rel="stylesheet" type="text/css">
+    <!-- Agent css-->
+    <link rel="stylesheet" href="/agent/agent.css">
 
-    <!--Agent css-->
-    <link rel="stylesheet" th:href="@{/agent/agent.css}">
-
-    <!-- jQuery -->
-    <script src="/deepor/vendors/jquery/dist/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/deepor/vendors/popper.js/dist/umd/popper.min.js"></script>
-    <script src="/deepor/dist/js/bootstrap.min.js"></script>
-
-    <!-- Slimscroll JavaScript -->
-    <script src="/deepor/dist/js/jquery.slimscroll.js"></script>
-
-    <!-- Fancy Dropdown JS -->
-    <script src="/deepor/dist/js/dropdown-bootstrap-extended.js"></script>
-
-    <!-- FeatherIcons JavaScript -->
-    <script src="/deepor/dist/js/feather.min.js"></script>
-
-    <!-- Toggles JavaScript -->
-    <script src="/deepor/vendors/jquery-toggles/toggles.min.js"></script>
-    <script src="/deepor/dist/js/toggle-data.js"></script>
-
-    <!-- Counter Animation JavaScript -->
-    <script src="/deepor/vendors/waypoints/lib/jquery.waypoints.min.js"></script>
-    <script src="/deepor/vendors/jquery.counterup/jquery.counterup.min.js"></script>
-
-    <!-- Sparkline JavaScript -->
-    <script src="/deepor/vendors/jquery.sparkline/dist/jquery.sparkline.min.js"></script>
-
-    <!-- Owl JavaScript -->
-    <script src="/deepor/vendors/owl.carousel/dist/owl.carousel.min.js"></script>
-
-    <!-- Toastr JS -->
-    <script src="/deepor/vendors/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
 </head>
 
 <!-- Top Navbar -->
@@ -88,7 +47,7 @@
 
 <!-- Vertical Nav -->
 <nav th:fragment="menu" class="hk-nav hk-nav-light">
-    <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
+    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
     <div class="nicescroll-bar">
         <div class="navbar-nav-wrap">
             <ul class="navbar-nav flex-column">
@@ -159,6 +118,7 @@
 
         </div>
     </div>
+    </div>
 </nav>
 <!-- /Vertical Nav -->
 
@@ -191,83 +151,72 @@
 <!-- /Vertical Nav Dynamic-->
 <!-- main -->
 <div th:fragment="main">
-<div class="hk-row">
-    <div class="col-lg-3 col-md-6">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="d-flex justify-content-between mb-5">
-                    <div>
-                        <span class="d-block font-15 text-dark font-weight-500">Users</span>
-                    </div>
-                    <div>
-                        <span class="text-success font-14 font-weight-500">+10%</span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <span class="d-block display-4 text-dark mb-5">36.1K</span>
-                    <small class="d-block">172,458 Target Users</small>
-                </div>
-            </div>
-        </div>
 
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="d-flex justify-content-between mb-5">
-                    <div>
-                        <span class="d-block font-15 text-dark font-weight-500">Campaign Leads</span>
-                    </div>
-                    <div>
-                        <span class="text-success font-14 font-weight-500">+12.5%</span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <span class="d-block display-4 text-dark mb-5"><span class="counter-anim">168,856</span></span>
-                    <small class="d-block">472,458 Targeted</small>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="d-flex justify-content-between mb-5">
-                    <div>
-                        <span class="d-block font-15 text-dark font-weight-500">New Contacts</span>
-                    </div>
-                    <div>
-                        <span class="text-warning font-14 font-weight-500">-2.8%</span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <span class="d-block display-4 text-dark mb-5">73</span>
-                    <small class="d-block">100 Targeted</small>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card card-sm">
-            <div class="card-body">
-                <div class="d-flex justify-content-between mb-5">
-                    <div>
-                        <span class="d-block font-15 text-dark font-weight-500">Win/Loss Ratio</span>
-                    </div>
-                    <div>
-                        <span class="text-danger font-14 font-weight-500">-75%</span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <span class="d-block display-4 text-dark mb-5">48:65</span>
-                    <small class="d-block">42:32 Targeted</small>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 <!-- main -->
+
+<!--Page-->
+<!--page-->
+<nav th:fragment="page(total,number)">
+    <ul class="pagination justify-content-end" th:if="${total lt 7}">
+        <li class="page-item" th:classappend="${number==1}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'" >上一页</a></li>
+        <li class="page-item" th:each="i:${#numbers.sequence(1,total)}" th:classappend="${number==i}?'active disabled'"><a class="page-link" th:onclick="'turnPage('+${i}+')'" th:text="${i}">1</a></li>
+        <li class="page-item" th:classappend="${number==total}?'disabled'"><a class="page-link" th:onclick="'turnPage('+${number}+1+')'">下一页</a></li>
+    </ul>
+    <div th:unless="${total lt 7}">
+        <ul class="pagination justify-content-end" th:if="${number lt 3}">
+            <li class="page-item" th:classappend="${number==1}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'" >上一页</a></li>
+            <li class="page-item" th:classappend="${number==1}?'disabled active'"><a class="page-link" th:onclick="turnPage(1)">1</a></li>
+            <li class="page-item" th:classappend="${number==2}?'disabled active'"><a class="page-link" th:onclick="turnPage(2)">2</a></li>
+            <li class="page-item"><a class="page-link"  th:onclick="turnPage(3)" >3</a></li>
+            <li class="page-item disabled"><a class="page-link" href="">&#8230</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="'turnPage('+${total}+')'" th:text="${total}"></a></li>
+            <li class="page-item" th:classappend="${number==total}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}+1)+')'">下一页</a></li>
+        </ul>
+        <ul class="pagination justify-content-end" th:if="${number eq 3}">
+            <li class="page-item" th:classappend="${number==1}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'" >上一页</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="turnPage(1)" >1</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="turnPage(2)">2</a></li>
+            <li class="page-item active disabled"><a class="page-link" th:onclick="turnPage(3)" >3</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="turnPage(4)" >4</a></li>
+            <li class="page-item disabled"><a class="page-link" href="">&#8230</a></li>
+            <li class="page-item"><a class="page-link" th:text="${total}" th:onclick="'turnPage('+${total}+')'"></a></li>
+            <li class="page-item" th:classappend="${number==total}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}+1)+')'">下一页</a></li>
+        </ul>
+        <ul class="pagination justify-content-end" th:if="${number gt 3 && number lt (total-2)}">
+            <li class="page-item" th:classappend="${number==1}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'" >上一页</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="turnPage(1)" >1</a></li>
+            <li class="page-item disabled"><a class="page-link" href="">&#8230</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'" th:text="${number}-1"></a></li>
+            <li class="page-item active disabled"><a class="page-link" th:onclick="'turnPage('+${number}+')'" th:text="${number}"></a></li>
+            <li class="page-item"><a class="page-link" th:onclick="'turnPage('+(${number}+1)+')'"  th:text="${number}+1"></a></li>
+            <li class="page-item disabled"><a class="page-link" href="">&#8230</a></li>
+            <li class="page-item"><a class="page-link" th:text="${total}" th:onclick="'turnPage('+${total}+')'" ></a></li>
+            <li class="page-item" th:classappend="${number==total}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}+1)+')'">下一页</a></li>
+        </ul>
+        <ul class="pagination justify-content-end" th:if="${number eq (total-2)}">
+            <li class="page-item" th:classappend="${number==1}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'">上一页</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="turnPage(1)" >1</a></li>
+            <li class="page-item disabled"><a class="page-link" href="">&#8230</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'" th:text="${number}-1"></a></li>
+            <li class="page-item active disabled"><a class="page-link" th:onclick="'turnPage('+${number}+')'" th:text="${number}"></a></li>
+            <li class="page-item"><a class="page-link" th:onclick="'turnPage('+(${number}+1)+')'" th:text="${number}+1"></a></li>
+            <li class="page-item"><a class="page-link" th:text="${total}" th:onclick="'turnPage('+${total}+')'" ></a></li>
+            <li class="page-item" th:classappend="${number==total}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}+1)+')'">下一页</a></li>
+        </ul>
+        <ul class="pagination justify-content-end" th:if="${number gt (total-2)}">
+            <li class="page-item" th:classappend="${number==1}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'">上一页</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="turnPage(1)" >1</a></li>
+            <li class="page-item disabled"><a class="page-link" href="">&#8230</a></li>
+            <li class="page-item"><a class="page-link" th:onclick="'turnPage('+(${total}-2)+')'" th:text="${total}-2"></a></li>
+            <li class="page-item" th:classappend="${number eq (total-1)}?'disabled active'"><a class="page-link" th:onclick="'turnPage('+(${total}-1)+')'" th:text="${total}-1"></a></li>
+            <li class="page-item" th:classappend="${number eq total}?'disabled active'"><a class="page-link" th:text="${total}" th:onclick="'turnPage('+${total}+')'" ></a></li>
+            <li class="page-item" th:classappend="${number==total}?'disabled disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}+1)+')'" >下一页</a></li>
+        </ul>
+    </div>
+</nav>
+<!--Page-->
+
 <!-- message -->
 <div th:fragment="alterModal" class="modal fade" id="alterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
     <div class="modal-dialog" role="document">

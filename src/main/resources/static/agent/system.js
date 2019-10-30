@@ -48,7 +48,7 @@ function changeUser(userId, type) {
     agentConfirm('确定'+msg+'该用户？',function () {
         $('#confirmModal').modal('hide');
         $('#confirmButton').unbind();
-        params = {userId:userId,type:type};
+        var params = {userId: userId, type: type};
         ajaxPost('/system/change-user',params,function (data) {
             if(data.code==0){
                 alter('用户已'+msg);
@@ -107,7 +107,7 @@ function deletePermisson(id) {
     agentConfirm('确定删除此菜单？',function () {
         $('#confirmModal').modal('hide');
         $('#confirmButton').unbind();
-        params = {id:id};
+        var params = {id: id};
         ajaxPost('/system/delete-permissions',params,function (data) {
             if(data.code==0){
                 alter('删除成功');

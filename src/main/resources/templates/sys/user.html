@@ -107,6 +107,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div th:replace="module::page(total=${page.getTotalPages()},number=${page.getNumber()}+1)"></div>
                 </div>
             </section>
         </div>

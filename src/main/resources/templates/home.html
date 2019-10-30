@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="module::head"></div>
+<body>
+	<!-- HK Wrapper -->
+	<div class="hk-wrapper hk-vertical-nav">
+		<div th:replace="module::top"></div>
+		<div th:replace="module::menu"></div>
+        <!-- Main Content -->
+        <div class="hk-pg-wrapper">
+			<!-- Container -->
+            <div class="container-fluid mt-xl-50 mt-sm-30 mt-15">
+                <!-- Row -->
+                <div class="row">
+                    <input id="viewSelect" th:value="${url}" hidden="hidden">
+                    <div class="col-xl-12"></div>
+                </div>
+                <!-- /Row -->
+            </div>
+            <!-- /Container -->
+			
+            <div th:replace="module::foot"></div>
+        </div>
+        <!-- /Main Content -->
+
+    </div>
+    <!-- /HK Wrapper -->
+    <div th:replace="module::alterModal"></div>
+    <div th:replace="module::confirmModal"></div>
+
+    <!-- jQuery -->
+    <script src="/deepor/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/deepor/js/popper.min.js"></script>
+    <script src="/deepor/js/bootstrap.min.js"></script>
+
+    <!-- Fancy Dropdown JS -->
+    <script src="/deepor/js/dropdown-bootstrap-extended.js"></script>
+
+    <!-- FeatherIcons JavaScript -->
+    <script src="/deepor/js/feather.min.js"></script>
+
+    <!-- Toast JavaScript -->
+    <script src="/deepor/js/jquery.toast.min.js"></script>
+
+    <!-- Init JavaScript -->
+    <script src="/deepor/js/init.js"></script>
+
+    <script src="/agent/agent.js"></script>
+    <script src="/agent/system.js"></script>
+<script>
+    window.onload=function(){
+        var url = $('#viewSelect').val();
+        if(url.length!=0){
+            indexView(url);
+        }
+    }
+</script>
+</body>
+
+</html>

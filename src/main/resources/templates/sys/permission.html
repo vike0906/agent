@@ -40,16 +40,16 @@
                                     <span>不可操作</span>
                                 </td>
                                 <td align="center" th:unless="${menu.parentId eq 0}">
-                                    <button class="btn btn-danger btn-sm" th:onclick="'deletePermisson('+${menu.id}+')'">删除菜单</button>
-                                    <!--<a th:case="9" class="btn btn-light btn-sm" th:onclick="'changeUser('+${user.id}+', 2)'">-->
-                                    <!--<i class="glyphicon glyphicon-ok"></i><span> 启用</span>-->
-                                    <!--</a>-->
+                                    <a class="btn btn-light btn-sm" th:onclick="'deletePermisson('+${menu.id}+')'">
+                                        <i class="glyphicon glyphicon-trash"></i><span> 删除</span>
+                                    </a>
                                 </td>
                             </tr>
 
                             </tbody>
                         </table>
                     </div>
+                    <div th:replace="module::page(total=${page.getTotalPages()},number=${page.getNumber()}+1)"></div>
                 </div>
             </section>
         </div>

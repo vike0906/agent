@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Comparator;
 import java.util.List;
@@ -27,7 +28,12 @@ public class ViewController {
 //        List<SysPermission> sysPermissions = builderMenus(menus, url);
 //        map.addAttribute("menus",sysPermissions);
         map.addAttribute("url",url);
-        return "index";
+        return "home";
+    }
+
+    @RequestMapping("login")
+    public String login(){
+        return "login";
     }
 
     @GetMapping("view/main")

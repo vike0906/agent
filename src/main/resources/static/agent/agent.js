@@ -42,7 +42,13 @@ function alter(message) {
 }
 
 function messageReload() {
-    location.reload();
+    var pageNo = $(".page-item.active.disabled").children(".page-link").text();
+    if(pageNo.length==0){
+        var url = $('#viewSelect').val();
+        indexView(url);
+    }else {
+        turnPage(pageNo)
+    }
 }
 
 function agentConfirm(message, confirm) {
@@ -53,7 +59,7 @@ function agentConfirm(message, confirm) {
 
 function indexView(url) {
     ajaxGet(url,function (response) {
-        $(".col-xl-12").html(response);
+        $("#homeView").html(response);
     })
 }
 function alterToast(info) {

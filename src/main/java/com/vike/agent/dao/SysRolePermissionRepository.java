@@ -16,4 +16,6 @@ import java.util.Optional;
 public interface SysRolePermissionRepository extends JpaRepository<SysRolePermission,Long>, JpaSpecificationExecutor<SysRolePermission> {
 
     List<SysRolePermission> findAllByRoleId(long roleId);
+
+    List<SysRolePermission> findAllByPermissionId(long permissionId);
 }

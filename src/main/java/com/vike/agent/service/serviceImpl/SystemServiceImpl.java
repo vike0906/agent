@@ -158,7 +158,19 @@ public class SystemServiceImpl implements SystemService {
             SysPermission sysPermissionNew = new SysPermission();
             sysPermissionNew.setName(name).setUrl(url).setParentId(sysPermission.getId())
                     .setLevel(sysPermission.getLevel()).setSort(sysPermission.getSort());
-            return sysPermissionRepository.save(sysPermissionNew);
+            SysPermission save = sysPermissionRepository.save(sysPermissionNew);
+
+            List<SysRole> all = sysRoleRepository.findAll();
+            List<SysRolePermission> sysRolePermissions = new ArrayList<>(all.size());
+
+            for(SysRole role:all){
+                SysRolePermission sysRolePermission = new SysRolePermission();
+                sysRolePermission.setRoleId(role.getId()).setPermissionId(save.getId()).setStatus(GloableConstant.CANCEL_STATUS);
+                sysRolePermissions.add(sysRolePermission);
+            }
+            sysRolePermissionRepository.saveAll(sysRolePermissions);
+
+            return save;
         }
         return null;
     }
@@ -166,6 +178,8 @@ public class SystemServiceImpl implements SystemService {
     @Override
     @Transactional
     public void deletePermission(long id) {
+        List<SysRolePermission> allByPermissionId = sysRolePermissionRepository.findAllByPermissionId(id);
+        sysRolePermissionRepository.deleteInBatch(allByPermissionId);
         sysPermissionRepository.deleteById(id);
     }
 }

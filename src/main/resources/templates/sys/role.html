@@ -30,6 +30,7 @@
                                 <td th:text="${role.name}"></td>
                                 <td th:text="${#dates.format(role.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
                                 <td align="center" >
+                                    <input th:id="${role.id}" th:value="${role.name}" type="hidden">
                                     <a class="btn btn-light btn-sm" th:onclick="'editRole('+${role.id}+')'">
                                         <i class="glyphicon glyphicon-pencil"></i><span> 编辑</span>
                                     </a>
@@ -74,7 +75,7 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editRoleModalCenterTitle">编辑角色</h5>
@@ -85,39 +86,20 @@
                 <div class="modal-body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover">
-                            <caption>菜单权限详情</caption>
                             <thead class="thead-light">
                             <tr>
                                 <th>权限名称</th>
                                 <th>url</th>
-                                <th>状态</th>
+                                <th>是否拥有</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody id="editRoleTableBody">
-                            <!--<tr th:each="menu,state : ${page.content}">-->
-                                <!--<td th:text="${state.count}"></td>-->
-                                <!--<td th:text="${menu.name}"></td>-->
-                                <!--<td th:text="${menu.url}?:'#'"></td>-->
-                                <!--<td th:switch="${menu.isParent}">-->
-                                    <!--<span th:case="1" style="color: green">主菜单</span>-->
-                                    <!--<span th:case="2" style="color: yellowgreen">子菜单</span>-->
-                                <!--</td>-->
-                                <!--<td th:switch="${menu.status}">-->
-                                    <!--<span th:case="1" style="color: green">正常</span>-->
-                                    <!--<span th:case="9" style="color: red">已删除</span>-->
-                                <!--</td>-->
-                                <!--<td th:text="${#dates.format(menu.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>-->
-                                <!--<td align="center">-->
-                                    <!--<button class="btn btn-outline-secondary my-2 my-sm-0" onclick="add()">修改</button>-->
-                                    <!--<button class="btn btn-outline-danger my-2 my-sm-0" onclick="add()">删除</button>-->
-                                <!--</td>-->
-                            <!--</tr>-->
                             </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                     </div>
                 </div>
             </div>

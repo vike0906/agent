@@ -58,12 +58,12 @@ public class CustomizeShiroRealm extends AuthorizingRealm {
         Optional<SysUser> op = sysUserRepository.findByLoginName(name);
         if (!op.isPresent()) {
             log.error("用户不存在");
-            throw new AuthenticationException("用户名或密码错误");
+            throw new CustomizeShiroException("用户名或密码错误");
         }
         SysUser user = op.get();
         if(GloableConstant.CANCEL_STATUS ==user.getStatus()){
             log.error("账户已注销");
-            throw new AuthenticationException("用户已被禁用");
+            throw new CustomizeShiroException("用户已被禁用");
         }else {
             List<Object> principals = new ArrayList<Object>();
             principals.add(user.getName());

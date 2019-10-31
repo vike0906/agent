@@ -16,6 +16,6 @@ import java.util.List;
 @Repository
 public interface SysPermissionVoRepository extends JpaRepository<SysPermissionVo,Long>, JpaSpecificationExecutor<SysPermissionVo> {
 
-    @Query(value = "select b.*, a.status, a.id rp_id from sys_role_permission a left join sys_permission b on a.permission_id = b.id where a.role_id=?1 order by b.sort",nativeQuery = true)
+    @Query(value = "select b.*, a.status, a.id rp_id from sys_role_permission a left join sys_permission b on a.permission_id = b.id where a.role_id=?1 and b.parent_id != 0 order by b.sort",nativeQuery = true)
     List<SysPermissionVo> findAllByRoleId(long roleId);
 }

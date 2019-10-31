@@ -104,6 +104,12 @@ function changePassword() {
     });
 }
 
+function turnPage(pageNo) {
+    var url = $('#viewSelect').val();
+    url = url+'?pageNo='+pageNo;
+    indexView(url);
+}
+
 
 
 

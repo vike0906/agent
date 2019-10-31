@@ -77,16 +77,32 @@ function addRole() {
 }
 
 function editRole(id) {
+
+    var name = $("#"+id).val();
+    $("#editRoleModalCenterTitle").html('编辑<strong>'+name+'</strong>的权限');
+
     ajaxGet('/system/role-permissions?roleId='+id, function (response) {
         if(response.code==0){
             var trBody = '';
             response.data.forEach(function (a) {
-                trBody=trBody+'<tr><td>'+a.name+'</td><td>'+a.url+'</td><td>'+a.status+'</td><td>'+a.rpId+'</td></tr>'
+                trBody=trBody+'<tr><td>'+a.name+'</td><td>'+a.url+'</td><td>'+(a.status==1?'<span style="color: green">有</span>':'<span style="color: red">无</span>')+'</td><td><button class="btn btn-sm btn-outline-'+(a.status==1?'danger':'success')+'" onclick="changRolePermission('+a.rpId+','+(a.status==1?2:1)+')">'+(a.status==1?'关闭':'添加')+'</button></td></tr>';
             });
             $("#editRoleTableBody").html(trBody);
             $("#editRoleModal").modal('show');
         }else{
             alter(data.message);
+        }
+    });
+}
+
+function changRolePermission(id, type) {
+    var params = {id:id, type:type};
+    ajaxPost('/system/edit-role',params,function (response) {
+        if(response.code==0){
+            $("#editRoleModal").modal('hide');
+            alter('添加成功');
+        }else {
+            alterToast(response.message);
         }
     });
 }

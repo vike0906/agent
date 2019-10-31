@@ -2,6 +2,7 @@ package com.vike.agent.controller;
 
 import com.vike.agent.common.Response;
 import com.vike.agent.component.SystemCache;
+import com.vike.agent.config.CustomizeShiroException;
 import com.vike.agent.dao.SysUserRepository;
 import com.vike.agent.entity.SysPermission;
 import com.vike.agent.entity.SysUser;
@@ -9,6 +10,8 @@ import com.vike.agent.utils.EncryptUtils;
 import com.vike.agent.utils.ShiroUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +71,10 @@ public class ViewController {
             log.info("登陆成功：{}", loginName);
             subject.getSession().setTimeout(loginTimeOut*1000);
             return new Response(Response.SUCCESS, "登录成功");
-        }catch (Exception e){
+        }catch (CustomizeShiroException e){
             return new Response(Response.ERROR, e.getMessage());
+        }catch (Exception e){
+            return new Response(Response.ERROR, "用户名或密码错误");
         }
     }
 

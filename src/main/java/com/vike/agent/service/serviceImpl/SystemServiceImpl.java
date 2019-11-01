@@ -2,6 +2,7 @@ package com.vike.agent.service.serviceImpl;
 
 import com.vike.agent.common.GloableConstant;
 import com.vike.agent.common.PageLimit;
+import com.vike.agent.component.SystemCache;
 import com.vike.agent.dao.*;
 import com.vike.agent.entity.*;
 import com.vike.agent.service.SystemService;
@@ -36,6 +37,8 @@ public class SystemServiceImpl implements SystemService {
     SysPermissionRepository sysPermissionRepository;
     @Autowired
     SysPermissionVoRepository sysPermissionVoRepository;
+    @Autowired
+    SystemCache systemCache;
 
     @Override
     public Page<SysUser> findUsers(PageLimit pageLimit) {
@@ -133,6 +136,7 @@ public class SystemServiceImpl implements SystemService {
             rolePermission.setStatus(GloableConstant.CANCEL_STATUS);
         }
         sysRolePermissionRepository.save(rolePermission);
+        systemCache.updateMenuCache();
         return null;
     }
 

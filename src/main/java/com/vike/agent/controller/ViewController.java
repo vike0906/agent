@@ -112,4 +112,16 @@ public class ViewController {
         return "home";
     }
 
+    @GetMapping("view/summary/summary/index")
+    public String summaryIndex(ModelMap map){
+        SysUser user = ShiroUtil.getUser();
+
+        List<SysPermission> menus = SystemCache.MENU_CACHE.get(user.getRole().getName()+"/summary/summary/index");
+
+        map.addAttribute("userName",user.getName());
+        map.addAttribute("menus",menus);
+
+        return "index";
+    }
+
 }

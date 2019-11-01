@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="bonus" class="col-xl-12">
+    <div class="hk-row">
+        <div class="col-12">
+            <section class="hk-sec-wrapper">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <form class="form-inline mt-2 mt-md-0">
+                        <input class="form-control mr-sm-2" id="queryStr" type="text" placeholder="输入手机号码" aria-label="Search">
+                        <a class="btn btn-light btn-sm" onclick="screen()"><i class="ion-ios-search"></i><span> 查找</span></a>
+                    </form>
+                </div>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <caption>平台分佣明细</caption>
+                            <thead class="thead-light">
+                            <tr>
+                                <th>时间</th>
+                                <th>客户名称</th>
+                                <th>电话</th>
+                                <th>消费内容</th>
+                                <th>分佣金额</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2019-11-01 08:08:08</td>
+                                    <td>李明</td>
+                                    <td>13283746321</td>
+                                    <td>信用卡查询</td>
+                                    <td>5.88</td>
+                                    <td>已结算</td>
+                                </tr>
+                                <tr>
+                                    <td>2019-11-01 08:08:08</td>
+                                    <td>李明</td>
+                                    <td>13283746321</td>
+                                    <td>信用卡查询</td>
+                                    <td>5.88</td>
+                                    <td>已结算</td>
+                                </tr>
+                                <tr>
+                                    <td>2019-11-01 08:08:08</td>
+                                    <td>李明</td>
+                                    <td>13283746321</td>
+                                    <td>信用卡查询</td>
+                                    <td>5.88</td>
+                                    <td>已结算</td>
+                                </tr>
+                                <tr>
+                                    <td>2019-11-01 08:08:08</td>
+                                    <td>李明</td>
+                                    <td>13283746321</td>
+                                    <td>信用卡查询</td>
+                                    <td>5.88</td>
+                                    <td>已结算</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:replace="module::page(total=1,number=1)"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>

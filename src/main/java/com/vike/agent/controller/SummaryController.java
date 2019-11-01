@@ -14,9 +14,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("summary")
 public class SummaryController {
 
-    @GetMapping("income")
-    public String users(ModelMap map){
-        return "summary/income::income";
+    @GetMapping("bonus")
+    public String bonus(){
+        return "summary/bonus::bonus";
+    }
 
+    @GetMapping("agent")
+    public String agent(){
+        return "summary/agent::agent";
+    }
+
+    @GetMapping("withdraw")
+    public String withdraw(){
+        return "summary/withdraw::withdraw";
     }
 }

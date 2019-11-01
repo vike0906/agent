@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="withdraw" class="col-xl-12">
+    <div class="hk-row">
+        <div class="col-12">
+            <section class="hk-sec-wrapper">
+                <h5>提现记录</h5>
+                <hr>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>时间</th>
+                                <th>提现方式</th>
+                                <th>账号</th>
+                                <th>提现金额</th>
+                                <th>账户余额</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2019-11-01 10:10:10</td>
+                                    <td>支付宝</td>
+                                    <td>13627363728</td>
+                                    <td>2000</td>
+                                    <td>18273.23</td>
+                                    <td><span style="color: green">已到账</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2019-11-01 10:10:10</td>
+                                    <td>支付宝</td>
+                                    <td>13627363728</td>
+                                    <td>2000</td>
+                                    <td>18273.23</td>
+                                    <td><span style="color: green">已到账</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2019-11-01 10:10:10</td>
+                                    <td>支付宝</td>
+                                    <td>13627363728</td>
+                                    <td>2000</td>
+                                    <td>18273.23</td>
+                                    <td><span style="color: green">已到账</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2019-11-01 10:10:10</td>
+                                    <td>支付宝</td>
+                                    <td>13627363728</td>
+                                    <td>1000</td>
+                                    <td>18273.23</td>
+                                    <td><span style="color: green">已到账</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:replace="module::page(total=1,number=1)"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>

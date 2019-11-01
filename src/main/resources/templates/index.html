@@ -5,7 +5,7 @@
 	<!-- HK Wrapper -->
 	<div class="hk-wrapper hk-vertical-nav">
 		<div th:replace="module::top"></div>
-		<div th:replace="module::menu"></div>
+		<div th:replace="module::menu-dynamic(menus=${menus})"></div>
         <div id="hk_nav_backdrop" class="hk-nav-backdrop"></div>
         <!-- Main Content -->
         <div class="hk-pg-wrapper">
@@ -31,13 +31,13 @@
                                         </div>
                                     </div>
                                     <div class="card-footer justify-content-between" style="background-color: #944545d6;border-color: #b35151d6">
-                                        <button class="btn btn-outline-dark">交易明细</button>
-                                        <button class="btn btn-outline-dark">提现</button>
+                                        <button class="btn btn-outline-red">交易明细</button>
+                                        <button class="btn btn-outline-red">提现</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <h6>收益统计</h6>
+                        <h6>收益汇总</h6>
                         <hr>
                         <div class="hk-row">
                             <div class="col-lg-2 col-md-4 offset-lg-1 offset-md-0">
@@ -45,7 +45,7 @@
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between mb-5">
                                             <div>
-                                                <span class="d-block text-dark font-weight-500">昨日收益:</span>
+                                                <span class="d-block text-dark font-weight-500">今日收益:</span>
                                             </div>
                                             <!--<div>-->
                                             <!--<span class="text-success font-14 font-weight-500">+10%</span>-->
@@ -63,7 +63,7 @@
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between mb-5">
                                             <div>
-                                                <span class="d-block text-dark font-weight-500">今日收益:</span>
+                                                <span class="d-block text-dark font-weight-500">昨日收益:</span>
                                             </div>
                                         </div>
                                         <div class="text-center">
@@ -78,7 +78,7 @@
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between mb-5">
                                             <div>
-                                                <span class="d-block text-dark font-weight-500">上月收益:</span>
+                                                <span class="d-block text-dark font-weight-500">本月收益:</span>
                                             </div>
                                         </div>
                                         <div class="text-center">
@@ -93,7 +93,7 @@
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between mb-5">
                                             <div>
-                                                <span class="d-block text-dark font-weight-500">本月收益:</span>
+                                                <span class="d-block text-dark font-weight-500">上月收益:</span>
                                             </div>
                                         </div>
                                         <div class="text-center">
@@ -122,6 +122,57 @@
                     </div>
                 </div>
                 <!-- /Row -->
+                <div class="hk-row">
+                    <div class="col-12">
+                        <h6>收益流水</h6>
+                        <hr>
+                        <section class="hk-sec-wrapper">
+
+                            <div class="table-wrap">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <caption>按日统计</caption>
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th>日期</th>
+                                            <th>分佣金额</th>
+                                            <th>总额</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>2019-10-31</td>
+                                            <td>888.66</td>
+                                            <td>888.66</td>
+                                            <td align="center"><a class="btn btn-light btn-sm"><i class="ion-ios-paper"></i><span> 查看明细</span></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2019-10-30</td>
+                                            <td>888.66</td>
+                                            <td>888.66</td>
+                                            <td align="center"><a class="btn btn-light btn-sm"><i class="ion-ios-paper"></i><span> 查看明细</span></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2019-10-29</td>
+                                            <td>888.66</td>
+                                            <td>888.66</td>
+                                            <td align="center"><a class="btn btn-light btn-sm"><i class="ion-ios-paper"></i><span> 查看明细</span></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2019-10-28</td>
+                                            <td>888.66</td>
+                                            <td>888.66</td>
+                                            <td align="center"><a class="btn btn-light btn-sm"><i class="ion-ios-paper"></i><span> 查看明细</span></a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div th:replace="module::page(total=1,number=1)"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
             </div>
             <!-- /Container -->
 			

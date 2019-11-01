@@ -4,6 +4,10 @@ spring:
     password: ms123456.
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://106.13.222.152:9001/vike?characterEncoding=UTF-8
+    hikari:
+      minimum-idle: 5
+      connection-test-query: SELECT 1 FROM DUAL
+      validation-timeout: 1000
 
 
   jpa:

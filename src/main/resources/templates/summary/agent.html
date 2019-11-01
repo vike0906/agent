@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="agent" class="col-xl-12">
+    <div class="hk-row">
+        <div class="col-12">
+            <section class="hk-sec-wrapper">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <a class="btn btn-light btn-sm hk-sec-title" style="width: 6rem;" data-toggle="modal" data-target="#addUserModal">
+                        <i class="ion ion-md-add-circle"></i><span> 添加渠道</span>
+                    </a>
+                    <form class="form-inline mt-2 mt-md-0">
+                        <input class="form-control mr-sm-2" id="queryStr" type="text" placeholder="输入手机号码" aria-label="Search">
+                        <a class="btn btn-light btn-sm" onclick="screen()"><i class="ion-ios-search"></i><span> 查找</span></a>
+                    </form>
+                </div>
+                <div class="table-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>昵称</th>
+                                <th>登录名</th>
+                                <th>手机号</th>
+                                <th>佣金总额</th>
+                                <th>状态</th>
+                                <th>加入时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>王小二</td>
+                                    <td>wxe2019</td>
+                                    <td>13283746321</td>
+                                    <td>2837.34</td>
+                                    <td><span style="color: green">正常</span></td>
+                                    <td>2019-11-01 10:10:10</td>
+                                    <td>
+                                        <a class="btn btn-light btn-sm"><i class="fa fa-ban"></i><span> 禁用</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>王小二</td>
+                                    <td>wxe2019</td>
+                                    <td>13283746321</td>
+                                    <td>2837.34</td>
+                                    <td><span style="color: green">正常</span></td>
+                                    <td>2019-11-01 10:10:10</td>
+                                    <td>
+                                        <a class="btn btn-light btn-sm"><i class="fa fa-ban"></i><span> 禁用</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>王小二</td>
+                                    <td>wxe2019</td>
+                                    <td>13283746321</td>
+                                    <td>2837.34</td>
+                                    <td><span style="color: red">禁用</span></td>
+                                    <td>2019-11-01 10:10:10</td>
+                                    <td>
+                                        <a class="btn btn-light btn-sm"><i class="glyphicon glyphicon-ok"></i><span> 启用</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>王小二</td>
+                                    <td>wxe2019</td>
+                                    <td>13283746321</td>
+                                    <td>2837.34</td>
+                                    <td><span style="color: green">正常</span></td>
+                                    <td>2019-11-01 10:10:10</td>
+                                    <td>
+                                        <a class="btn btn-light btn-sm"><i class="fa fa-ban"></i><span> 禁用</span></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:replace="module::page(total=1,number=1)"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -33,12 +33,13 @@ function addUser() {
         return;
     }
     var params = {name:name,loginName:loginName,password:password,roleId:userRole};
-    $('#addUserModal').modal('hide');
+
     ajaxPost('/system/add-user',params,function (data) {
         if(data.code==0){
+            $('#addUserModal').modal('hide');
             alter(data.message);
         }else{
-            alter(data.message);
+            alterToast(data.message);
         }
     });
 }
@@ -66,12 +67,12 @@ function addRole() {
         return;
     }
     var params = {name:name};
-    $('#addRoleModal').modal('hide');
     ajaxPost('/system/add-role',params,function (data) {
         if(data.code==0){
+            $('#addRoleModal').modal('hide');
             alter(data.message);
         }else{
-            alter(data.message);
+            alterToast(data.message);
         }
     });
 }
@@ -127,12 +128,12 @@ function addPermission() {
         return;
     }
     var params = {name:name,url:url,parentId:parentId};
-    $('#addPermissionModal').modal('hide');
     ajaxPost('/system/add-permissions',params,function (data) {
         if(data.code==0){
+            $('#addPermissionModal').modal('hide');
             alter(data.message);
         }else{
-            alter(data.message);
+            alterToast(data.message);
         }
     });
 }

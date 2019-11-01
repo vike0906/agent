@@ -7,12 +7,12 @@
         <div class="col-12">
             <section class="hk-sec-wrapper">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <a class="btn btn-light btn-sm hk-sec-title" style="width: 6rem;" data-toggle="modal" data-target="#addUserModal">
+                    <a class="btn btn-light btn-sm hk-sec-title" style="width: 6rem;" data-toggle="modal" data-target="#addAgentModal">
                         <i class="ion ion-md-add-circle"></i><span> 添加渠道</span>
                     </a>
                     <form class="form-inline mt-2 mt-md-0">
-                        <input class="form-control mr-sm-2" id="queryStr" type="text" placeholder="输入手机号码" aria-label="Search">
-                        <a class="btn btn-light btn-sm" onclick="screen()"><i class="ion-ios-search"></i><span> 查找</span></a>
+                        <input class="form-control mr-sm-2" th:value="${mobile}" id="queryByMobile" type="text" placeholder="输入手机号码" aria-label="Search">
+                        <a class="btn btn-light btn-sm" onclick="searchAgent()"><i class="ion-ios-search"></i><span> 查找</span></a>
                     </form>
                 </div>
                 <div class="table-wrap">
@@ -23,63 +23,102 @@
                                 <th>昵称</th>
                                 <th>登录名</th>
                                 <th>手机号</th>
+                                <th>分佣比例</th>
                                 <th>佣金总额</th>
+                                <th width="10%">分配链接</th>
                                 <th>状态</th>
                                 <th>加入时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>王小二</td>
-                                    <td>wxe2019</td>
-                                    <td>13283746321</td>
-                                    <td>2837.34</td>
-                                    <td><span style="color: green">正常</span></td>
-                                    <td>2019-11-01 10:10:10</td>
-                                    <td>
-                                        <a class="btn btn-light btn-sm"><i class="fa fa-ban"></i><span> 禁用</span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>王小二</td>
-                                    <td>wxe2019</td>
-                                    <td>13283746321</td>
-                                    <td>2837.34</td>
-                                    <td><span style="color: green">正常</span></td>
-                                    <td>2019-11-01 10:10:10</td>
-                                    <td>
-                                        <a class="btn btn-light btn-sm"><i class="fa fa-ban"></i><span> 禁用</span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>王小二</td>
-                                    <td>wxe2019</td>
-                                    <td>13283746321</td>
-                                    <td>2837.34</td>
-                                    <td><span style="color: red">禁用</span></td>
-                                    <td>2019-11-01 10:10:10</td>
-                                    <td>
-                                        <a class="btn btn-light btn-sm"><i class="glyphicon glyphicon-ok"></i><span> 启用</span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>王小二</td>
-                                    <td>wxe2019</td>
-                                    <td>13283746321</td>
-                                    <td>2837.34</td>
-                                    <td><span style="color: green">正常</span></td>
-                                    <td>2019-11-01 10:10:10</td>
-                                    <td>
-                                        <a class="btn btn-light btn-sm"><i class="fa fa-ban"></i><span> 禁用</span></a>
-                                    </td>
-                                </tr>
+                            <tr th:each="agent,state : ${page.content}">
+                                <td th:text="${agent.nickName}"></td>
+                                <td th:text="${agent.loginName}"></td>
+                                <td th:text="${agent.mobile}"></td>
+                                <td th:text="${agent.ratio}+'%'" align="center"></td>
+                                <td th:text="${#numbers.formatDecimal(agent.amount/100.0,1,2)}"></td>
+                                <td th:text="${queryUrl}+'/'+${agent.url}" width="10%"></td>
+                                <td th:switch="${agent.status}">
+                                    <span th:case="1" style="color: green">正常</span>
+                                    <span th:case="9" style="color: red">禁用</span>
+                                </td>
+                                <td th:text="${#dates.format(agent.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td align="center" >
+                                    <div th:switch="${agent.status}" style="display: inline">
+                                        <a th:case="1" class="btn btn-light btn-sm" th:onclick="'changeAgent('+${agent.id}+', 1)'">
+                                            <i class="fa fa-ban"></i><span> 禁用</span>
+                                        </a>
+                                        <a th:case="9" class="btn btn-light btn-sm" th:onclick="'changeAgent('+${agent.id}+', 2)'">
+                                            <i class="glyphicon glyphicon-ok"></i><span> 启用</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div th:replace="module::page(total=1,number=1)"></div>
+                    <div th:replace="module::page(total=${page.getTotalPages()},number=${page.getNumber()}+1)"></div>
                 </div>
             </section>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addAgentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">添加渠道</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger fade show" role="alert" hidden="hidden" id="alertInfo" style="text-align: center"></div>
+                    <form>
+                        <div class="form-group row">
+                            <label for="nickName" class="col-sm-3 col-form-label">昵称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="nickName" placeholder="请输入昵称">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="loginName" class="col-sm-3 col-form-label">登录名</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="loginName" placeholder="请输入登录名">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="mobile" class="col-sm-3 col-form-label">联系电话</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="mobile" placeholder="请输入联系电话">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ratio" class="col-sm-3 col-form-label">分佣比例(%)</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="ratio" placeholder="请输入分佣比例（1~100）">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-3 col-form-label">密码</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="password" placeholder="请输入密码">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="password1" class="col-sm-3 col-form-label">确认密码</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="password1" placeholder="请再次输入密码">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" onclick="addAgent()">添加</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

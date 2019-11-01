@@ -19,3 +19,7 @@ spring:
 
 logging:
   config: classpath:logs/dev.xml
+
+system:
+  loginTimeOut: 1800
+  queryUrl: http://zhengxincahxunlianjie/index

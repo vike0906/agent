@@ -59,6 +59,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
+    @Transactional
     public String changeUser(long id, int type) {
         Optional<SysUser> op = sysUserRepository.findById(id);
         if(op.isPresent()){

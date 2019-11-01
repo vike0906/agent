@@ -50,7 +50,7 @@ public class SystemController {
         if(id==null){
             Optional<SysUser> op = systemService.findUsers(loginName);
             if(op.isPresent()){
-                return new Response(Response.ERROR,"用户名已存在");
+                return new Response(Response.ERROR,"登录名已存在");
             }
             systemService.save(name, loginName, password, roleId);
             return new Response(Response.SUCCESS,"用户添加成功");

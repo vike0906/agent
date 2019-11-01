@@ -116,6 +116,14 @@ function turnPage(pageNo) {
     indexView(url);
 }
 
+function showLoading() {
+    $(".loading").css('display','block');
+}
+
+function closeLoading() {
+    $(".loading").css('display','none');
+}
+
 
 
 

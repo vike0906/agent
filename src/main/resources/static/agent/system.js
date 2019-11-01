@@ -77,30 +77,35 @@ function addRole() {
 }
 
 function editRole(id) {
-
-    var name = $("#"+id).val();
-    $("#editRoleModalCenterTitle").html('编辑<strong>'+name+'</strong>的权限');
-
-    ajaxGet('/system/role-permissions?roleId='+id, function (response) {
-        if(response.code==0){
-            var trBody = '';
-            response.data.forEach(function (a) {
-                trBody=trBody+'<tr><td>'+a.name+'</td><td>'+a.url+'</td><td>'+(a.status==1?'<span style="color: green">有</span>':'<span style="color: red">无</span>')+'</td><td><button class="btn btn-sm btn-outline-'+(a.status==1?'danger':'success')+'" onclick="changRolePermission('+a.rpId+','+(a.status==1?2:1)+')">'+(a.status==1?'关闭':'添加')+'</button></td></tr>';
-            });
-            $("#editRoleTableBody").html(trBody);
-            $("#editRoleModal").modal('show');
-        }else{
-            alter(data.message);
-        }
-    });
+    showLoading();
+    setTimeout(closeLoading,3000);
+    // var name = $("#"+id).val();
+    // $("#editRoleModalCenterTitle").html('编辑<strong>'+name+'</strong>的权限');
+    //
+    // ajaxGet('/system/role-permissions?roleId='+id, function (response) {
+    //     if(response.code==0){
+    //         var trBody = '';
+    //         var addButton = '<i class="ion-ios-add-circle-outline"></i><span> 添加</span>';
+    //         var removeButton = '<i class="ion-ios-remove-circle-outline"></i><span> 移除</span>'
+    //         response.data.forEach(function (a) {
+    //             trBody=trBody+'<tr><td>'+a.name+'</td><td>'+a.url+'</td><td>'+(a.status==1?'<span style="color: green">有</span>':'<span style="color: red">无</span>')+'</td><td><a class="btn btn-sm btn-light" onclick="changRolePermission('+a.rpId+','+(a.status==1?2:1)+','+id+')">'+(a.status==1?removeButton:addButton)+'</a></td></tr>';
+    //         });
+    //         $("#editRoleTableBody").html(trBody);
+    //         $("#editRoleModal").modal('show');
+    //     }else{
+    //         alter(data.message);
+    //     }
+    // });
 }
 
-function changRolePermission(id, type) {
+function changRolePermission(id, type, roleId) {
     var params = {id:id, type:type};
+    var msg = type==1?'添加成功':'移除成功';
     ajaxPost('/system/edit-role',params,function (response) {
         if(response.code==0){
-            $("#editRoleModal").modal('hide');
-            alter('添加成功');
+            alterToast(msg);
+            // $("#editRoleModal").modal('hide');
+            editRole(roleId);
         }else {
             alterToast(response.message);
         }

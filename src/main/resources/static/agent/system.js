@@ -77,25 +77,23 @@ function addRole() {
 }
 
 function editRole(id) {
-    showLoading();
-    setTimeout(closeLoading,3000);
-    // var name = $("#"+id).val();
-    // $("#editRoleModalCenterTitle").html('编辑<strong>'+name+'</strong>的权限');
-    //
-    // ajaxGet('/system/role-permissions?roleId='+id, function (response) {
-    //     if(response.code==0){
-    //         var trBody = '';
-    //         var addButton = '<i class="ion-ios-add-circle-outline"></i><span> 添加</span>';
-    //         var removeButton = '<i class="ion-ios-remove-circle-outline"></i><span> 移除</span>'
-    //         response.data.forEach(function (a) {
-    //             trBody=trBody+'<tr><td>'+a.name+'</td><td>'+a.url+'</td><td>'+(a.status==1?'<span style="color: green">有</span>':'<span style="color: red">无</span>')+'</td><td><a class="btn btn-sm btn-light" onclick="changRolePermission('+a.rpId+','+(a.status==1?2:1)+','+id+')">'+(a.status==1?removeButton:addButton)+'</a></td></tr>';
-    //         });
-    //         $("#editRoleTableBody").html(trBody);
-    //         $("#editRoleModal").modal('show');
-    //     }else{
-    //         alter(data.message);
-    //     }
-    // });
+    var name = $("#"+id).val();
+    $("#editRoleModalCenterTitle").html('编辑<strong>'+name+'</strong>的权限');
+
+    ajaxGet('/system/role-permissions?roleId='+id, function (response) {
+        if(response.code==0){
+            var trBody = '';
+            var addButton = '<i class="ion-ios-add-circle-outline"></i><span> 添加</span>';
+            var removeButton = '<i class="ion-ios-remove-circle-outline"></i><span> 移除</span>'
+            response.data.forEach(function (a) {
+                trBody=trBody+'<tr><td>'+a.name+'</td><td>'+a.url+'</td><td>'+(a.status==1?'<span style="color: green">有</span>':'<span style="color: red">无</span>')+'</td><td><a class="btn btn-sm btn-light" onclick="changRolePermission('+a.rpId+','+(a.status==1?2:1)+','+id+')">'+(a.status==1?removeButton:addButton)+'</a></td></tr>';
+            });
+            $("#editRoleTableBody").html(trBody);
+            $("#editRoleModal").modal('show');
+        }else{
+            alter(data.message);
+        }
+    });
 }
 
 function changRolePermission(id, type, roleId) {

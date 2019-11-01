@@ -1,23 +1,25 @@
 function ajaxGet(url, success) {
+    showLoading();
     $.ajax({
         url: url,
         type: 'GET',
         timeout: 10000,
         success: success,
         complete: function (xhr, status) {
+            closeLoading();
             if(status=='timeout'){
-                console.log('请求超时');
+                alterToast('请求超时');
             }
         },
         error: function (xhr, status) {
-            /*$.hideLoading();
-            $.toast('服务器出错', "cancel");*/
-            console.log('服务器出错');
+            closeLoading();
+            alterToast('服务器出错');
         }
     });
 }
 
 function ajaxPost(url, params, success) {
+    showLoading();
     $.ajax({
         url: url,
         type: 'POST',
@@ -26,12 +28,14 @@ function ajaxPost(url, params, success) {
         timeout: 10000,
         success: success,
         complete: function (xhr, status) {
+            closeLoading();
             if(status=='timeout'){
-                alter('请求超时');
+                alterToast('请求超时');
             }
         },
         error: function (xhr, status) {
-            alter('请求出错');
+            closeLoading();
+            alterToast('服务器出错');
         }
     });
 }

@@ -23,9 +23,10 @@
                                 <th>昵称</th>
                                 <th>登录名</th>
                                 <th>手机号</th>
+                                <th>级别</th>
                                 <th>分佣比例</th>
                                 <th>佣金总额</th>
-                                <th width="10%">分配链接</th>
+                                <th style="max-width: 200px">分配链接</th>
                                 <th>状态</th>
                                 <th>加入时间</th>
                                 <th>操作</th>
@@ -36,9 +37,17 @@
                                 <td th:text="${agent.nickName}"></td>
                                 <td th:text="${agent.loginName}"></td>
                                 <td th:text="${agent.mobile}"></td>
+                                <td th:switch="${agent.level}">
+                                    <span th:case="1">一级代理</span>
+                                    <span th:case="2">二级代理</span>
+                                </td>
                                 <td th:text="${agent.ratio}+'%'" align="center"></td>
-                                <td th:text="${#numbers.formatDecimal(agent.amount/100.0,1,2)}"></td>
-                                <td th:text="${queryUrl}+'/'+${agent.url}" width="10%"></td>
+                                <td th:text="${#numbers.formatDecimal(agent.amount/100.0,1,2)}+' 元'" align="center"></td>
+                                <td >
+                                    <span class="d-inline-block text-truncate" style="max-width: 150px;vertical-align: middle" data-toggle="tooltip-info" data-placement="top" th:title="${queryUrl}+'/'+${agent.url}" th:text="${queryUrl}+'/'+${agent.url}" th:id="${agent.id}"></span>
+                                    <a class="btn btn-light btn-sm" th:onclick="'copyUrl('+${agent.id}+')'" style="vertical-align: middle"><i class="ion-md-copy"></i><span> 复制</span></a>
+
+                                </td>
                                 <td th:switch="${agent.status}">
                                     <span th:case="1" style="color: green">正常</span>
                                     <span th:case="9" style="color: red">禁用</span>
@@ -52,6 +61,10 @@
                                         <a th:case="9" class="btn btn-light btn-sm" th:onclick="'changeAgent('+${agent.id}+', 2)'">
                                             <i class="glyphicon glyphicon-ok"></i><span> 启用</span>
                                         </a>
+                                        <input th:id="'editAgent'+${agent.id}" th:nickName="${agent.nickName}" th:loginName="${agent.loginName}" th:mobile="${agent.mobile}" th:ratio="${agent.ratio}" hidden="hidden">
+                                        <a class="btn btn-light btn-sm" th:onclick="'editAgentModal('+${agent.id}+')'">
+                                            <i class="ion-md-build"></i><span> 修改</span>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -64,17 +77,16 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="addAgentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="addAgentModal" tabindex="-1" role="dialog" aria-labelledby="addAgentModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">添加渠道</h5>
+                    <h5 class="modal-title" id="addAgentModalCenterTitle">添加渠道</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger fade show" role="alert" hidden="hidden" id="alertInfo" style="text-align: center"></div>
                     <form>
                         <div class="form-group row">
                             <label for="nickName" class="col-sm-3 col-form-label">昵称</label>
@@ -100,13 +112,13 @@
                                 <input type="number" class="form-control" id="ratio" placeholder="请输入分佣比例（1~100）">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" id="passwordDiv">
                             <label for="password" class="col-sm-3 col-form-label">密码</label>
                             <div class="col-sm-8">
                                 <input type="password" class="form-control" id="password" placeholder="请输入密码">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" id="passwordDiv1">
                             <label for="password1" class="col-sm-3 col-form-label">确认密码</label>
                             <div class="col-sm-8">
                                 <input type="password" class="form-control" id="password1" placeholder="请再次输入密码">
@@ -115,7 +127,53 @@
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-danger" onclick="addAgent()">添加</button>
+                        <button type="button" class="btn btn-danger" onclick="addAgent()" id="addAgentButton">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="editAgentModal" tabindex="-1" role="dialog" aria-labelledby="editAgentModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAgentModalCenterTitle">修改渠道</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="editAgentId">
+                        <div class="form-group row">
+                            <label for="editNickName" class="col-sm-3 col-form-label">昵称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="editNickName" placeholder="请输入昵称">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editLoginName" class="col-sm-3 col-form-label">登录名</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="editLoginName" placeholder="请输入登录名">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editMobile" class="col-sm-3 col-form-label">联系电话</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="editMobile" placeholder="请输入联系电话">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editRatio" class="col-sm-3 col-form-label">分佣比例(%)</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="editRatio" placeholder="请输入分佣比例（1~100）">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger" onclick="editAgent()">修改</button>
                     </div>
                 </div>
             </div>

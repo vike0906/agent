@@ -69,17 +69,26 @@ public class SummaryController {
                              @RequestParam String password){
 
         SysUser user = ShiroUtil.getUser();
-        if(user.getRole().getId()!=GloableConstant.AGENT_LEVEL_FIRST){
-            return new Response(Response.ERROR,"仅一级代理可添加渠道");
-        }
+
         Optional<SysUser> op = systemService.findUsers(loginName);
         if(op.isPresent()){
             return new Response(Response.ERROR,"登录名已存在");
         }
-        summaryService.saveAgent(nickName, loginName, mobile, ratio,password,user.getId());
+        summaryService.saveAgent(user, nickName, loginName, mobile, ratio,password,user.getId());
         return new Response(Response.SUCCESS,"用户添加成功");
     }
-
+    @PostMapping("edit-agent")
+    @ResponseBody
+    public Response editAgent(@RequestParam long id,
+                              @RequestParam String nickName,
+                              @RequestParam String mobile,
+                              @RequestParam int ratio){
+        String s = summaryService.editAgent(ShiroUtil.getUser(),id,nickName,mobile,ratio);
+        if(s!=null){
+            return new Response(Response.ERROR,s);
+        }
+        return new Response(Response.SUCCESS,"修改成功");
+    }
     @GetMapping("withdraw")
     public String withdraw(){
         return "summary/withdraw::withdraw";

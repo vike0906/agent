@@ -67,11 +67,23 @@ function indexView(url) {
     })
 }
 function alterToast(info) {
+    var color = '#e54533';
+    var textColor = '#e5eed0';
+    alterToastBasic(info,color,textColor)
+}
+
+function alterGreen(info) {
+    var color = '#36aeff';
+    var textColor = '#260706';
+    alterToastBasic(info,color,textColor)
+}
+
+function alterToastBasic(info, color, textColor) {
     $.toast({
         text : info,
         showHideTransition : 'fade',
-        bgColor : '#ee5130',
-        textColor : '#e5eed0',
+        bgColor : color,
+        textColor : textColor,
         class: 'jq-toast-primary',
         allowToastClose : false,
         hideAfter : 2000,

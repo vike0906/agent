@@ -101,22 +101,53 @@ public class SummaryServiceImpl implements SummaryService {
 
     @Override
     @Transactional
-    public void saveAgent(String nickName, String loginName, String mobile, Integer ratio, String password,long parSysId) {
+    public String editAgent(SysUser sysUser, long id, String nickName, String mobile, int ratio) {
+        Optional<Agent> op = agentRepository.findById(id);
+        if(op.isPresent()){
+            Agent agent = op.get();
+            if(sysUser.getRole().getId() == GloableConstant.AGENT_LEVEL_FIRST){
+                Agent agentParent = agentRepository.findAgentBySysId(sysUser.getId()).get();
+                if(agentParent.getId()!=agent.getParId()) return "非法请求";
+            }
+            agent.setNickName(nickName).setMobile(mobile).setRatio(ratio);
+            agentRepository.save(agent);
+            return null;
+        }
+        return "代理不存在";
+    }
+
+    @Override
+    @Transactional
+    public void saveAgent(SysUser sysUserP, String nickName, String loginName, String mobile, Integer ratio, String password,long parSysId) {
         Agent agentParent = agentRepository.findAgentBySysId(parSysId).get();
-        /**构造SysUser并添加*/
         SysUser sysUser = new SysUser();
-        SysRole sysRole = sysRoleRepository.findById(GloableConstant.AGENT_LEVEL_SECOND).get();
+        SysRole sysRole = null;
+        long parId = 0L;
+        int level = 1;
+        String url = "#";
+
+        if(sysUserP.getRole().getId()==GloableConstant.AGENT_LEVEL_FIRST){
+            sysRole = sysRoleRepository.findById(GloableConstant.AGENT_LEVEL_SECOND).get();
+            parId = agentParent.getId();
+            level = 2;
+            url = RandomUtil.UUID();
+        }else {
+            sysRole = sysRoleRepository.findById(GloableConstant.AGENT_LEVEL_FIRST).get();
+        }
+
+        /**构造SysUser并添加*/
         sysUser.setName(nickName).setLoginName(loginName)
                 .setStatus(GloableConstant.CANCEL_STATUS)
                 .setPassword(EncryptUtils.MD5(password))
                 .setRole(sysRole);
         SysUser save = sysUserRepository.save(sysUser);
+
         /**构造Agent并添加*/
         Agent agent = new Agent();
         agent.setNickName(nickName).setLoginName(loginName)
-                .setSysId(save.getId()).setParId(agentParent.getId()).setLevel(2)
+                .setSysId(save.getId()).setRatio(ratio)
                 .setStatus(GloableConstant.CANCEL_STATUS).setMobile(mobile)
-                .setRatio(ratio).setUrl(RandomUtil.UUID());
+                .setParId(parId).setLevel(level).setUrl(url);
         agentRepository.save(agent);
     }
 

@@ -21,6 +21,16 @@ function changeAgent(agentId, type) {
     });
 }
 
+function copyUrl(id) {
+    var url  = $("#"+id).attr('title');
+    var element = $("<textarea>" + url + "</textarea>");
+    $("body").append(element);
+    element[0].select();
+    document.execCommand("Copy");
+    element.remove();
+    alterGreen("链接已复制到粘贴板");
+}
+
 function addAgent() {
     var nickName = $("#nickName").val();
     var loginName = $("#loginName").val();
@@ -28,12 +38,20 @@ function addAgent() {
     var ratio = $("#ratio").val();
     var password = $("#password").val();
     var password1 = $("#password1").val();
+    if(nickName.length==0){
+        alterToast('昵称为空');
+        return;
+    }
     if(loginName.length==0){
         alterToast('登陆名为空');
         return;
     }
-    var check = baseCheck(nickName,mobile,ratio);
-    if(check!=0){
+    if(mobile.length==0){
+        alterToast('联系电话为空');
+        return;
+    }
+    if(ratio.length==0){
+        alterToast('分佣比例为空');
         return;
     }
     if(password.length==0){
@@ -42,6 +60,19 @@ function addAgent() {
     }
     if(password1.length==0){
         alterToast('请再次输入密码');
+        return;
+    }
+
+    var reg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+    if(reg.test(mobile)==false){
+        alterToast("请输入正确的联系电话");
+        return;
+    }
+    if(ratio<=0||ratio>=100){
+        alterToast("分佣比例应在1~100之间");
+        return;
+    }
+    if(check!=0){
         return;
     }
     if(password != password1){
@@ -60,27 +91,58 @@ function addAgent() {
     });
 }
 
-function baseCheck(nickName,mobile,ratio) {
+function editAgentModal(id) {
+    $('#editAgentId').val(id);
+    $('#editAgentModal').modal('show');
+
+    var editAgent = $('#editAgent'+id);
+    var nickName = editAgent.attr('nickName');
+    var loginName = editAgent.attr('loginName');
+    var mobile = editAgent.attr('mobile');
+    var ratio = editAgent.attr('ratio');
+
+
+    $("#editNickName").val(nickName);
+    $("#editLoginName").val(loginName);
+    $("#editLoginName").attr('readOnly',true);
+    $("#editMobile").val(mobile);
+    $("#editRatio").val(ratio);
+}
+
+function editAgent() {
+    var id = $("#editAgentId").val();
+    var nickName = $("#editNickName").val();
+    var mobile = $("#editMobile").val();
+    var ratio = $("#editRatio").val();
     if(nickName.length==0){
         alterToast('昵称为空');
-        return 1;
+        return;
     }
     if(mobile.length==0){
         alterToast('联系电话为空');
-        return 1;
+        return;
     }
     if(ratio.length==0){
         alterToast('分佣比例为空');
-        return 1;
+        return;
     }
     var reg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
     if(reg.test(mobile)==false){
         alterToast("请输入正确的联系电话");
-        return 1;
+        return;
     }
     if(ratio<=0||ratio>=100){
         alterToast("分佣比例应在1~100之间");
-        return 1;
+        return;
     }
-    return 0;
+
+    var params = {id:id,nickName:nickName,mobile:mobile,ratio:ratio};
+    ajaxPost('/summary/edit-agent',params,function (data) {
+        if(data.code==0){
+            $('#editAgentModal').modal('hide');
+            alter(data.message);
+        }else{
+            alterToast(data.message);
+        }
+    });
 }

@@ -15,5 +15,7 @@ public interface SummaryService {
 
     String changeAgent(SysUser sysUser, long id, int type);
 
-    void saveAgent(String nickName, String loginName, String mobile, Integer ratio, String password,long parSysId);
+    String editAgent(SysUser sysUser, long id, String nickName, String mobile, int ratio);
+
+    void saveAgent(SysUser sysUserP, String nickName, String loginName, String mobile, Integer ratio, String password,long parSysId);
 }

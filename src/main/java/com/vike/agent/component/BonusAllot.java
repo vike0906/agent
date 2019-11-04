@@ -100,7 +100,7 @@ public class BonusAllot {
             Bonus bonusParent = new Bonus();
             bonusParent.setAgentId(agentParent.getId()).setParentAgentId(0L).setAgentMobile(agentParent.getMobile())
                     .setAgentTag(order.getAgentTag()).setClientName(order.getName()).setClientMobile(order.getMobile())
-                    .setBusiness(BUSINESS_NAME).setLevel(1).setStatus(GloableConstant.NORMALL_STATUS);
+                    .setBusiness(BUSINESS_NAME).setLevel(GloableConstant.AGENT_FIRST_LEVEL).setStatus(GloableConstant.NORMALL_STATUS);
             bonusRepository.save(bonusParent);
 
             //分配二级代理佣金并记录
@@ -108,7 +108,7 @@ public class BonusAllot {
             Bonus bonus = new Bonus();
             bonus.setAgentId(agent.getId()).setParentAgentId(agentParent.getId()).setAgentMobile(agent.getMobile())
                     .setAgentTag(order.getAgentTag()).setClientName(order.getName()).setClientMobile(order.getMobile())
-                    .setBusiness(BUSINESS_NAME).setLevel(2).setStatus(GloableConstant.NORMALL_STATUS);
+                    .setBusiness(BUSINESS_NAME).setLevel(GloableConstant.AGENT_SECOND_LEVEL).setStatus(GloableConstant.NORMALL_STATUS);
             bonusRepository.save(bonus);
 
         }else {

@@ -4,6 +4,7 @@ import com.vike.agent.common.PageLimit;
 import com.vike.agent.entity.Agent;
 import com.vike.agent.entity.Bonus;
 import com.vike.agent.entity.SysUser;
+import com.vike.agent.vo.SummaryVo;
 import org.springframework.data.domain.Page;
 
 import java.util.Date;
@@ -23,4 +24,6 @@ public interface SummaryService {
     void saveAgent(SysUser sysUserP, String nickName, String loginName, String mobile, Integer ratio, String password,long parSysId);
 
     Page<Bonus> findBonus(SysUser sysUser, String queryStr, String queryDate, PageLimit pageLimit);
+
+    SummaryVo summary(SysUser sysUser);
 }

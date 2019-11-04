@@ -26,7 +26,8 @@
                                     <div class="card-body">
                                         <div class="card-title"><span>总额:</span></div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i><span class="counter-anim"> 1680.23</span></span>
+                                            <span class="d-block display-5 mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.balance/100.0,1,2)}+' 元'"></span></span>
                                             <!--<small class="d-block">35次分佣</small>-->
                                         </div>
                                     </div>
@@ -52,8 +53,9 @@
                                             <!--</div>-->
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i><span class="counter-anim"> 1680.23</span></span>
-                                            <small class="d-block">35次分佣</small>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.todayAmount/100.0,1,2)}"></span></span>
+                                            <small class="d-block" th:text="' '+${summary.todayBonus}+'次分佣'"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -67,8 +69,9 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i><span class="counter-anim">680.95</span></span>
-                                            <small class="d-block">16次分佣</small>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.lastDayAmount/100.0,1,2)}"></span></span>
+                                            <small class="d-block" th:text="' '+${summary.todayBonus}+'次分佣'"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -82,8 +85,9 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i><span class="counter-anim">10680.00</span></span>
-                                            <small class="d-block">160次分佣</small>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.monthAmount/100.0,1,2)}"></span></span>
+                                            <small class="d-block" th:text="' '+${summary.monthBonus}+'次分佣'"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -97,8 +101,9 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i><span class="counter-anim">1680.43</span></span>
-                                            <small class="d-block">660次分佣</small>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.monthAmount/100.0,1,2)}"></span></span>
+                                            <small class="d-block" th:text="' '+${summary.monthBonus}+'次分佣'"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -112,8 +117,9 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i><span class="counter-anim">680034.34</span></span>
-                                            <small class="d-block">3424次分佣</small>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.totalAmount/100.0,1,2)}"></span></span>
+                                            <small class="d-block" th:text="' '+${summary.totalBonus}+'次分佣'"></small>
                                         </div>
                                     </div>
                                 </div>

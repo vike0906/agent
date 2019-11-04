@@ -13,15 +13,14 @@ import java.util.List;
  * @Author: lsl
  * @CreateDate: 2019/10/29
  */
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
+@Entity
 public class SysPermissionVo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "name")

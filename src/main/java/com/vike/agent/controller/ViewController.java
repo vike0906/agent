@@ -6,8 +6,10 @@ import com.vike.agent.config.CustomizeShiroException;
 import com.vike.agent.dao.SysUserRepository;
 import com.vike.agent.entity.SysPermission;
 import com.vike.agent.entity.SysUser;
+import com.vike.agent.service.SummaryService;
 import com.vike.agent.utils.EncryptUtils;
 import com.vike.agent.utils.ShiroUtil;
+import com.vike.agent.vo.SummaryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -35,6 +37,8 @@ public class ViewController {
 
     @Autowired
     SysUserRepository sysUserRepository;
+    @Autowired
+    SummaryService summaryService;
 
     @RequestMapping("/")
     public String root(ModelMap map){
@@ -45,8 +49,10 @@ public class ViewController {
     public String index(ModelMap map){
         SysUser user = ShiroUtil.getUser();
         List<SysPermission> menus = SystemCache.MENU_CACHE.get(user.getRole().getName());
+        SummaryVo summary = summaryService.summary(ShiroUtil.getUser());
         map.addAttribute("userName",user.getName());
         map.addAttribute("menus",menus);
+        map.addAttribute("summary",summary);
         return "index";
     }
 
@@ -111,12 +117,11 @@ public class ViewController {
     @GetMapping("view/summary/summary/index")
     public String summaryIndex(ModelMap map){
         SysUser user = ShiroUtil.getUser();
-
         List<SysPermission> menus = SystemCache.MENU_CACHE.get(user.getRole().getName()+"/summary/summary/index");
-
+        SummaryVo summary = summaryService.summary(user);
         map.addAttribute("userName",user.getName());
         map.addAttribute("menus",menus);
-
+        map.addAttribute("summary",summary);
         return "index";
     }
 

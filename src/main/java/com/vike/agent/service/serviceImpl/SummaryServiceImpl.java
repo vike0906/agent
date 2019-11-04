@@ -6,13 +6,11 @@ import com.vike.agent.dao.AgentRepository;
 import com.vike.agent.dao.BonusRepository;
 import com.vike.agent.dao.SysRoleRepository;
 import com.vike.agent.dao.SysUserRepository;
-import com.vike.agent.entity.Agent;
-import com.vike.agent.entity.Bonus;
-import com.vike.agent.entity.SysRole;
-import com.vike.agent.entity.SysUser;
+import com.vike.agent.entity.*;
 import com.vike.agent.service.SummaryService;
 import com.vike.agent.utils.EncryptUtils;
 import com.vike.agent.utils.RandomUtil;
+import com.vike.agent.vo.SummaryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.text.ParseException;
@@ -49,6 +49,8 @@ public class SummaryServiceImpl implements SummaryService {
     SysUserRepository sysUserRepository;
     @Autowired
     SysRoleRepository sysRoleRepository;
+    @Autowired
+    EntityManager entityManager;
 
     @Override
     public Page<Agent> findByParId(SysUser sysUser, String mobile, PageLimit pageLimit) {
@@ -163,8 +165,8 @@ public class SummaryServiceImpl implements SummaryService {
 
     @Override
     public Page<Bonus> findBonus(SysUser sysUser, String queryStr, String queryDate, PageLimit pageLimit) {
-        long roleId = sysUser.getRole().getId();
 
+        long roleId = sysUser.getRole().getId();
 
         Specification<Bonus> specification = (Specification<Bonus>)(root, query, builder)->{
             List<Predicate> list = new ArrayList<>();
@@ -211,12 +213,73 @@ public class SummaryServiceImpl implements SummaryService {
         return bonusRepository.findAll(specification,pageLimit.page());
     }
 
+    @Override
+    public SummaryVo summary(SysUser sysUser) {
+        long roleId = sysUser.getRole().getId();
+        if(roleId==GloableConstant.AGENT_LEVEL_SECOND){
+            Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
+            if(op.isPresent()){
+                Agent agent = op.get();
+                String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where agent_id = "+agent.getId();
+                return vo(agent.getAmount(), totalSql);
+            }
+        }else if(roleId==GloableConstant.AGENT_LEVEL_FIRST){
+            Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
+            if(op.isPresent()){
+                Agent agent = op.get();
+                String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where parent_agent_id = "+agent.getId();
+                return vo(agent.getAmount(), totalSql);
+            }
+        }else {
+            String amountSql = "select IFNULL(sum(amount),0) amount from se_bonus where parent_agent_id = 0 ";
+            Query nativeQuery = entityManager.createNativeQuery(amountSql);
+            Long amount = (Long)nativeQuery.getSingleResult();
+            String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where parent_agent_id = 0 ";
+            return vo(amount.intValue(), totalSql);
+        }
+        return null;
+    }
+
     private boolean checkAgentPermission(SysUser sysUser, Agent agent){
         if(sysUser.getRole().getId() == GloableConstant.AGENT_LEVEL_FIRST){
             Agent agentParent = agentRepository.findAgentBySysId(sysUser.getId()).get();
             if(agentParent.getId()!=agent.getParId()) return false;
         }
         return true;
+    }
+
+    private SummaryPo po(String sql){
+        Query nativeQuery = entityManager.createNativeQuery(sql,SummaryPo.class);
+        SummaryPo po = (SummaryPo)nativeQuery.getSingleResult();
+        return po;
+    }
+
+    private SummaryVo vo(int amount, String totalSql){
+
+        SummaryVo summaryVo = new SummaryVo();
+
+        summaryVo.setBalance(amount);
+
+        SummaryPo po1 = po(totalSql);
+        summaryVo.setTotalAmount(po1.getAmount()).setTotalBonus(po1.getCount());
+
+        String todaySql = totalSql+" and Date(create_time) = Date(now())";
+        SummaryPo po2 = po(todaySql);
+        summaryVo.setTodayAmount(po2.getAmount()).setTodayBonus(po2.getCount());
+
+        String lastDaySql = totalSql+" and Date(create_time) = Date(DATE_SUB(NOW(),INTERVAL 1 DAY))";
+        SummaryPo po3 = po(lastDaySql);
+        summaryVo.setLastDayAmount(po3.getAmount()).setLastDayBonus(po3.getCount());
+
+        String monthSql = totalSql+" and Year(create_time) = Year(NOW()) and Month(create_time) = Month(NOW())";
+        SummaryPo po4 = po(monthSql);
+        summaryVo.setMonthAmount(po4.getAmount()).setMonthBonus(po4.getCount());
+
+        String lastMonthSql = totalSql+" and Year(create_time) = Year(DATE_SUB(NOW(),INTERVAL 1 MONTH)) and Month(create_time) = Month(DATE_SUB(NOW(),INTERVAL 1 MONTH))";
+        SummaryPo po5 = po(lastMonthSql);
+        summaryVo.setLastMonthAmount(po5.getAmount()).setLastMonthBonus(po5.getCount());
+
+        return summaryVo;
     }
 
 }

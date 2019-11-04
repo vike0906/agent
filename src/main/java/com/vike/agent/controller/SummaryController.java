@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
@@ -31,19 +32,27 @@ import java.util.Optional;
 @RequestMapping("summary")
 public class SummaryController {
 
+    private SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+
     @Value("${system.queryUrl:queryUrl}")
     private String queryUrl;
+
     @Autowired
     SummaryService summaryService;
     @Autowired
     SystemService systemService;
-    private SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+
 
     @GetMapping("bonus")
     public String bonus(ModelMap map, @RequestParam(required = false) String queryStr, @RequestParam(required = false) String queryDate, PageLimit pageLimit) throws ParseException {
         if(StringUtils.isEmpty(queryDate)){
-            String date = sd.format(new Date(System.currentTimeMillis()));
-            queryDate = date+" 至 "+date;
+            /** 默认查询一周的数据 */
+            long currentTimeMillis = System.currentTimeMillis();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(currentTimeMillis);
+            calendar.add(Calendar.DATE,-7);
+            calendar.getTime();
+            queryDate = sd.format(new Date(currentTimeMillis))+" 至 "+sd.format(calendar.getTime());
         }
         Page<Bonus> page = summaryService.findBonus(ShiroUtil.getUser(), queryStr, queryDate, pageLimit);
         map.put("page", page);

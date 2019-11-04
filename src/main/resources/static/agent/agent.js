@@ -133,6 +133,10 @@ function turnPage(pageNo) {
     if(queryStr.length>0){
         url = url+'&queryStr='+queryStr;
     }
+    var queryDate = $('#queryDate').val();
+    if(queryDate.length>0){
+        url = url+'&queryDate='+queryDate;
+    }
     indexView(url);
 }
 
@@ -142,6 +146,15 @@ function showLoading() {
 
 function closeLoading() {
     $(".loading").css('display','none');
+}
+
+function alertInfo(info) {
+    var alertInfo = $("#alertInfo");
+    alertInfo.text(info);
+    alertInfo.attr('hidden',false);
+    setTimeout(function () {
+        alertInfo.attr('hidden',true);
+    },2000)
 }
 
 

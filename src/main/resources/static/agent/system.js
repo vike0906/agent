@@ -1,11 +1,4 @@
-function alertInfo(info) {
-    var alertInfo = $("#alertInfo");
-    alertInfo.text(info);
-    alertInfo.attr('hidden',false);
-    setTimeout(function () {
-        alertInfo.attr('hidden',true);
-    },2000)
-}
+
 function addUser() {
     var name = $("#userName").val();
     var loginName = $("#loginName").val();

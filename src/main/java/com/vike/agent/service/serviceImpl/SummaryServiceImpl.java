@@ -3,14 +3,17 @@ package com.vike.agent.service.serviceImpl;
 import com.vike.agent.common.GloableConstant;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.dao.AgentRepository;
+import com.vike.agent.dao.BonusRepository;
 import com.vike.agent.dao.SysRoleRepository;
 import com.vike.agent.dao.SysUserRepository;
 import com.vike.agent.entity.Agent;
+import com.vike.agent.entity.Bonus;
 import com.vike.agent.entity.SysRole;
 import com.vike.agent.entity.SysUser;
 import com.vike.agent.service.SummaryService;
 import com.vike.agent.utils.EncryptUtils;
 import com.vike.agent.utils.RandomUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,7 +23,10 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +35,16 @@ import java.util.Optional;
  * @createDate: 2019/11/1
  */
 @Service
+@Slf4j
 public class SummaryServiceImpl implements SummaryService {
+
+
+    private SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     AgentRepository agentRepository;
+    @Autowired
+    BonusRepository bonusRepository;
     @Autowired
     SysUserRepository sysUserRepository;
     @Autowired
@@ -66,10 +78,9 @@ public class SummaryServiceImpl implements SummaryService {
         Optional<Agent> op = agentRepository.findById(id);
         if(op.isPresent()){
             Agent agent = op.get();
-            if(sysUser.getRole().getId()==GloableConstant.AGENT_LEVEL_FIRST){
-                Agent agentParent = agentRepository.findAgentBySysId(sysUser.getId()).get();
-                if(agentParent.getId()!=agent.getParId()) return "非法请求";
-            }
+
+            if(!checkAgentPermission(sysUser,agent)) return "非法请求";
+
             if(type==1){
                 if(agent.getStatus()!=GloableConstant.NORMALL_STATUS) return "状态错误";
 
@@ -105,10 +116,9 @@ public class SummaryServiceImpl implements SummaryService {
         Optional<Agent> op = agentRepository.findById(id);
         if(op.isPresent()){
             Agent agent = op.get();
-            if(sysUser.getRole().getId() == GloableConstant.AGENT_LEVEL_FIRST){
-                Agent agentParent = agentRepository.findAgentBySysId(sysUser.getId()).get();
-                if(agentParent.getId()!=agent.getParId()) return "非法请求";
-            }
+
+            if(!checkAgentPermission(sysUser,agent)) return "非法请求";
+
             agent.setNickName(nickName).setMobile(mobile).setRatio(ratio);
             agentRepository.save(agent);
             return null;
@@ -149,6 +159,64 @@ public class SummaryServiceImpl implements SummaryService {
                 .setStatus(GloableConstant.CANCEL_STATUS).setMobile(mobile)
                 .setParId(parId).setLevel(level).setUrl(url);
         agentRepository.save(agent);
+    }
+
+    @Override
+    public Page<Bonus> findBonus(SysUser sysUser, String queryStr, String queryDate, PageLimit pageLimit) {
+        long roleId = sysUser.getRole().getId();
+
+
+        Specification<Bonus> specification = (Specification<Bonus>)(root, query, builder)->{
+            List<Predicate> list = new ArrayList<>();
+            if(!StringUtils.isEmpty(queryStr)){
+                Path<String> clientMobile = root.get("clientMobile");
+                Path<String> agentMobile = root.get("agentMobile");
+                Predicate equal1 = builder.equal(clientMobile, queryStr);
+                Predicate equal2 = builder.equal(agentMobile, queryStr);
+                list.add(builder.or(equal1,equal2));
+            }
+            if(!StringUtils.isEmpty(queryDate)){
+                String[] split = queryDate.split(" 至 ");
+                if(split.length==2){
+                    try {
+                        Date start = sd.parse(split[0]+" 00:00:00");
+                        Date end = sd.parse(split[1]+" 23:59:59");
+                        Path<Date> createTime = root.get("createTime");
+                        list.add(builder.between(createTime,start,end));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        log.error("时间格式解析出错");
+                    }
+
+                }
+            }
+            if(roleId==GloableConstant.AGENT_LEVEL_SECOND){ //二级代理 查看个人分佣情况
+                Agent agent = agentRepository.findAgentBySysId(sysUser.getId()).get();
+                Path<Long> agentId = root.get("agentId");
+                list.add(builder.equal(agentId, agent.getId()));
+
+            }else if(roleId==GloableConstant.AGENT_LEVEL_FIRST){ //一级代理 查看所属渠道分佣情况
+                Agent agent = agentRepository.findAgentBySysId(sysUser.getId()).get();
+                Path<Long> parentAgentId = root.get("parentAgentId");
+                list.add(builder.equal(parentAgentId, agent.getId()));
+            }else { //运维 查看全部一级代理分佣情况
+                Path<Integer> level = root.get("level");
+                list.add(builder.notEqual(level, GloableConstant.AGENT_SECOND_LEVEL));
+            }
+            Predicate [] Predicates = new Predicate[list.size()];
+            query.where(builder.and(list.toArray(Predicates)));
+            query.orderBy(builder.desc(root.get("createTime")));
+            return query.getRestriction();
+        };
+        return bonusRepository.findAll(specification,pageLimit.page());
+    }
+
+    private boolean checkAgentPermission(SysUser sysUser, Agent agent){
+        if(sysUser.getRole().getId() == GloableConstant.AGENT_LEVEL_FIRST){
+            Agent agentParent = agentRepository.findAgentBySysId(sysUser.getId()).get();
+            if(agentParent.getId()!=agent.getParId()) return false;
+        }
+        return true;
     }
 
 }

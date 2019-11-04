@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: root
-    password: ms123456.
+    username: vike0906
+    password: v123456.
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://106.13.222.152:9001/vike?characterEncoding=UTF-8
     hikari:
@@ -24,4 +24,4 @@ logging:
 system:
   loginTimeOut: 1800
   queryUrl: http://zhengxincahxunlianjie/index
-  allotRefreshTime: 5
+  allotRefreshTime: 3600

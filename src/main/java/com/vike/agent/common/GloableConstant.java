@@ -19,4 +19,9 @@ public class GloableConstant {
     /**二级代理ID*/
     public static final long AGENT_LEVEL_SECOND = 4L;
 
+    /**一级代理*/
+    public static final int AGENT_FIRST_LEVEL = 1;
+    /**二级代理*/
+    public static final int AGENT_SECOND_LEVEL = 2;
+
 }

@@ -143,3 +143,25 @@ function editAgent() {
         }
     });
 }
+
+function queryByDate() {
+    var url = $('#viewSelect').val();
+    var queryDate = $('#queryDate').val();
+    var queryStr = $('#queryStr').val();
+    url = url+'?queryDate='+queryDate;
+    if(queryStr.length>0){
+        url = url+'&queryStr='+queryStr;
+    }
+    indexView(url);
+}
+
+function searchBonus() {
+    var url = $('#viewSelect').val();
+    var queryStr = $('#queryStr').val();
+    var queryDate = $('#queryDate').val();
+    url = url+'?queryStr='+queryStr;
+    if(queryDate.length>0){
+        url = url+'&queryDate='+queryDate;
+    }
+    indexView(url);
+}

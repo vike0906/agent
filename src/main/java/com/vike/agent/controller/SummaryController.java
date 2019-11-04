@@ -3,6 +3,7 @@ package com.vike.agent.controller;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.common.Response;
 import com.vike.agent.entity.Agent;
+import com.vike.agent.entity.Bonus;
 import com.vike.agent.entity.SysUser;
 import com.vike.agent.service.SummaryService;
 import com.vike.agent.service.SystemService;
@@ -13,8 +14,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -32,9 +37,19 @@ public class SummaryController {
     SummaryService summaryService;
     @Autowired
     SystemService systemService;
+    private SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
 
     @GetMapping("bonus")
-    public String bonus(){
+    public String bonus(ModelMap map, @RequestParam(required = false) String queryStr, @RequestParam(required = false) String queryDate, PageLimit pageLimit) throws ParseException {
+        if(StringUtils.isEmpty(queryDate)){
+            String date = sd.format(new Date(System.currentTimeMillis()));
+            queryDate = date+" 至 "+date;
+        }
+        Page<Bonus> page = summaryService.findBonus(ShiroUtil.getUser(), queryStr, queryDate, pageLimit);
+        map.put("page", page);
+        map.put("queryStr", queryStr);
+
+        map.put("queryDate", queryDate);
         return "summary/bonus::bonus";
     }
 

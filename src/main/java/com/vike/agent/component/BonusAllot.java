@@ -36,7 +36,7 @@ public class BonusAllot {
     /**订单状态--已分红*/
     private static final int ORDER_IS_ALLOT_STATUS = 3;
     /**业务名称*/
-    private static final String BUSINSESS_NAME = "征信查询";
+    private static final String BUSINESS_NAME = "征信查询";
 
     @Value("${system.allotRefreshTime:3600}")
     private long allotRefreshTime;
@@ -100,7 +100,7 @@ public class BonusAllot {
             Bonus bonusParent = new Bonus();
             bonusParent.setAgentId(agentParent.getId()).setParentAgentId(0L).setAgentMobile(agentParent.getMobile())
                     .setAgentTag(order.getAgentTag()).setClientName(order.getName()).setClientMobile(order.getMobile())
-                    .setBusiness(BUSINSESS_NAME).setLevel(1).setStatus(GloableConstant.NORMALL_STATUS);
+                    .setBusiness(BUSINESS_NAME).setLevel(1).setStatus(GloableConstant.NORMALL_STATUS);
             bonusRepository.save(bonusParent);
 
             //分配二级代理佣金并记录
@@ -108,7 +108,7 @@ public class BonusAllot {
             Bonus bonus = new Bonus();
             bonus.setAgentId(agent.getId()).setParentAgentId(agentParent.getId()).setAgentMobile(agent.getMobile())
                     .setAgentTag(order.getAgentTag()).setClientName(order.getName()).setClientMobile(order.getMobile())
-                    .setBusiness(BUSINSESS_NAME).setLevel(2).setStatus(GloableConstant.NORMALL_STATUS);
+                    .setBusiness(BUSINESS_NAME).setLevel(2).setStatus(GloableConstant.NORMALL_STATUS);
             bonusRepository.save(bonus);
 
         }else {
@@ -116,7 +116,7 @@ public class BonusAllot {
             Bonus bonusSystem = new Bonus();
             bonusSystem.setAgentId(0L).setParentAgentId(0L).setAgentMobile("system")
                     .setAgentTag(order.getAgentTag()).setClientName(order.getName()).setClientMobile(order.getMobile())
-                    .setBusiness(BUSINSESS_NAME).setLevel(0).setStatus(GloableConstant.NORMALL_STATUS);
+                    .setBusiness(BUSINESS_NAME).setLevel(0).setStatus(GloableConstant.NORMALL_STATUS);
             bonusRepository.save(bonusSystem);
         }
 

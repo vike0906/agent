@@ -1,7 +1,7 @@
 function searchAgent() {
     var url = $('#viewSelect').val();
-    var mobile = $('#queryByMobile').val();
-    url = url+'?mobile='+mobile;
+    var queryStr = $('#queryStr').val();
+    url = url+'?queryStr='+queryStr;
     indexView(url);
 }
 
@@ -70,9 +70,6 @@ function addAgent() {
     }
     if(ratio<=0||ratio>=100){
         alterToast("分佣比例应在1~100之间");
-        return;
-    }
-    if(check!=0){
         return;
     }
     if(password != password1){

@@ -129,6 +129,10 @@ function changePassword() {
 function turnPage(pageNo) {
     var url = $('#viewSelect').val();
     url = url+'?pageNo='+pageNo;
+    var queryStr = $('#queryStr').val();
+    if(queryStr.length>0){
+        url = url+'&queryStr='+queryStr;
+    }
     indexView(url);
 }
 

@@ -119,7 +119,6 @@ public class SummaryServiceImpl implements SummaryService {
     @Override
     @Transactional
     public void saveAgent(SysUser sysUserP, String nickName, String loginName, String mobile, Integer ratio, String password,long parSysId) {
-        Agent agentParent = agentRepository.findAgentBySysId(parSysId).get();
         SysUser sysUser = new SysUser();
         SysRole sysRole = null;
         long parId = 0L;
@@ -128,6 +127,7 @@ public class SummaryServiceImpl implements SummaryService {
 
         if(sysUserP.getRole().getId()==GloableConstant.AGENT_LEVEL_FIRST){
             sysRole = sysRoleRepository.findById(GloableConstant.AGENT_LEVEL_SECOND).get();
+            Agent agentParent = agentRepository.findAgentBySysId(parSysId).get();
             parId = agentParent.getId();
             level = 2;
             url = RandomUtil.UUID();

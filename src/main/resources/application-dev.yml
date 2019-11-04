@@ -13,7 +13,8 @@ spring:
   jpa:
     database: MYSQL
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+      use_query_cache: false
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
@@ -23,3 +24,4 @@ logging:
 system:
   loginTimeOut: 1800
   queryUrl: http://zhengxincahxunlianjie/index
+  allotRefreshTime: 5

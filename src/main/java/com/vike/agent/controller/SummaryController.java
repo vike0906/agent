@@ -1,6 +1,5 @@
 package com.vike.agent.controller;
 
-import com.vike.agent.common.GloableConstant;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.common.Response;
 import com.vike.agent.entity.Agent;
@@ -40,11 +39,11 @@ public class SummaryController {
     }
 
     @GetMapping("agent")
-    public String agent(ModelMap map, @RequestParam(required = false) String mobile, PageLimit pageLimit){
-        Page<Agent> page = summaryService.findByParId(ShiroUtil.getUser(), mobile, pageLimit);
+    public String agent(ModelMap map, @RequestParam(required = false) String queryStr, PageLimit pageLimit){
+        Page<Agent> page = summaryService.findByParId(ShiroUtil.getUser(), queryStr, pageLimit);
         map.put("page", page);
         map.put("queryUrl", queryUrl);
-        map.put("mobile", mobile);
+        map.put("queryStr", queryStr);
         return "summary/agent::agent";
     }
 

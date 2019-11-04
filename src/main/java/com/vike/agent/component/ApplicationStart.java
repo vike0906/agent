@@ -17,14 +17,19 @@ public class ApplicationStart implements ApplicationListener<ApplicationReadyEve
 
     @Autowired
     SystemCache systemCache;
+    @Autowired
+    BonusAllot bonusAllot;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
 
         log.info("应用已启动完成");
 
-        /**初始化角色路径对应菜单*/
+        log.info("初始化角色路径对应菜单");
         systemCache.updateMenuCache();
+
+        log.info("开始分配佣金");
+        bonusAllot.allot();
     }
 
 }

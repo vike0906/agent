@@ -14,7 +14,7 @@
                 <div class="table-wrap">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover">
-                            <caption>系统菜单信息</caption>
+                            <caption th:text="'系统菜单信息('+${page.getTotalElements()}+'条记录)'"></caption>
                             <thead class="thead-light">
                             <tr>
                                 <th>序号</th>
@@ -27,7 +27,7 @@
                             </thead>
                             <tbody>
 
-                            <tr th:each="menu,state : ${page.content}">
+                            <tr th:if="${page.content.size()> 0}" th:each="menu,state : ${page.content}">
                                 <td th:text="${state.count}"></td>
                                 <td th:text="${menu.name}"></td>
                                 <td th:text="${menu.url}?:'#'"></td>
@@ -45,7 +45,7 @@
                                     </a>
                                 </td>
                             </tr>
-
+                            <tr th:if="${page.content.size()==0}" align="center" ><td colspan="6">暂无数据</td></tr>
                             </tbody>
                         </table>
                     </div>

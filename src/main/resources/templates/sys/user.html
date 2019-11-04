@@ -68,7 +68,7 @@
                 <div class="table-wrap">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
-                        <caption>系统用户信息</caption>
+                        <caption th:text="'系统用户信息('+${page.getTotalElements()}+'条记录)'"></caption>
                         <thead class="thead-light">
                         <tr>
                             <th>序号</th>
@@ -82,7 +82,7 @@
                         </thead>
                         <tbody>
 
-                        <tr th:each="user,state : ${page.content}">
+                        <tr th:if="${page.content.size()> 0}" th:each="user,state : ${page.content}">
                             <td th:text="${state.count}"></td>
                             <td th:text="${user.name}"></td>
                             <td th:text="${user.loginName}"></td>
@@ -103,7 +103,7 @@
                                 </div>
                             </td>
                         </tr>
-
+                        <tr th:if="${page.content.size()==0}" align="center" ><td colspan="7">暂无数据</td></tr>
                         </tbody>
                     </table>
                 </div>

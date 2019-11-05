@@ -256,6 +256,71 @@
         </div>
     </div>
 </div>
+
+<!--withdraw-->
+<!-- Modal -->
+<div th:fragment="withdrawModal(balance)" class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="withdrawModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="withdrawModalCenterTitle">申请提现</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                        <label for="balanceAmount" class="col-sm-3 col-form-label">可提现额度</label>
+                        <div class="col-sm-8">
+                            <span style="color: red;font-size: x-large">
+                                <i class="ion-logo-yen"></i>
+                                <span class="counter-anim" id="balanceAmount" th:text="${balance}"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="withdrawAmount" class="col-sm-3 col-form-label">提现金额</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="withdrawAmount" placeholder="输入提现金额">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="withdrawAccount" class="col-sm-3 col-form-label">账号</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="withdrawAccount" placeholder="输入支付宝账号">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="withdrawName" class="col-sm-3 col-form-label">姓名</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="withdrawName" placeholder="输入真实姓名">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="withdrawType" class="col-sm-3 col-form-label">提现方式</label>
+                        <div class="col-sm-8">
+                            <select id="withdrawType" name="withdrawType" class="form-control">
+                                <option th:value="支付宝">支付宝</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="withdrawRemark" class="col-sm-3 col-form-label">备注</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="withdrawRemark" placeholder="输入提现备注">
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" onclick="withdrawPost()">提交申请</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--withdraw-->
 <!--Change Password-->
 <!-- Modal -->
 <div th:fragment="changePasswordModal" class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

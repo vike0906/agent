@@ -1,11 +1,9 @@
 package com.vike.agent.controller;
 
+import com.vike.agent.common.GloableConstant;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.common.Response;
-import com.vike.agent.entity.Agent;
-import com.vike.agent.entity.Bonus;
-import com.vike.agent.entity.Statistical;
-import com.vike.agent.entity.SysUser;
+import com.vike.agent.entity.*;
 import com.vike.agent.service.SummaryService;
 import com.vike.agent.service.SystemService;
 import com.vike.agent.utils.ShiroUtil;
@@ -115,8 +113,53 @@ public class SummaryController {
     }
 
     @GetMapping("withdraw")
-    public String withdraw(){
+    public String withdraw(ModelMap map, @RequestParam(required = false) String queryStr, @RequestParam(required = false) Integer queryType, PageLimit pageLimit){
+        SysUser user = ShiroUtil.getUser();
+        if(queryType==null){
+            queryType=0;
+        }
+        int isAudit = 0;
+        if(user.getRole().getId()==GloableConstant.ADMIN_ID||user.getRole().getId()==GloableConstant.OP_ID){
+            isAudit = 1;
+        }
+        Page<Withdraw> page = summaryService.findWithdraw(user, queryStr, queryType, pageLimit);
+        map.put("page", page);
+        map.put("queryStr", queryStr);
+        map.put("queryType", queryType);
+        map.put("isAudit",isAudit);
         return "summary/withdraw::withdraw";
+    }
+
+    @PostMapping("add-withdraw")
+    @ResponseBody
+    public Response addWithdraw(@RequestParam String account,
+                                @RequestParam String name,
+                                @RequestParam String type,
+                                @RequestParam Double amount,
+                                @RequestParam String remark){
+        SysUser user = ShiroUtil.getUser();
+        if(user.getRole().getId()!=GloableConstant.AGENT_LEVEL_FIRST) return new Response(Response.ERROR,"仅一级代理可申请提现");
+        amount = amount*100;
+        Withdraw withdraw = summaryService.saveWithdraw(user, account, name, type, amount.intValue(), remark);
+        if(withdraw!=null){
+            return new Response(Response.SUCCESS, withdraw.getOrderNo());
+        }
+
+        return new Response(Response.ERROR,"申请失败");
+    }
+
+    @PostMapping("audit-withdraw")
+    @ResponseBody
+    public Response addWithdraw(@RequestParam Long id, @RequestParam Integer type, @RequestParam String remark){
+        SysUser user = ShiroUtil.getUser();
+        if(user.getRole().getId()!=GloableConstant.ADMIN_ID||user.getRole().getId()!=GloableConstant.OP_ID) {
+            return new Response(Response.ERROR,"权限不足");
+        }
+        String audit = summaryService.audit(id, user.getId(), type, remark);
+        if(audit!=null){
+            return new Response(Response.SUCCESS,"审核成功");
+        }
+        return new Response(Response.ERROR,audit);
     }
 
     @GetMapping("statistical")

@@ -32,11 +32,11 @@
                                             <!--<small class="d-block">35次分佣</small>-->
                                         </div>
                                     </div>
-                                    <div th:if="${roleId eq 3}" class="card-footer justify-content-between" style="background-color: #944545d6;border-color: #b35151d6">
+                                    <div th:unless="${roleId eq 4}" class="card-footer justify-content-between" style="background-color: #944545d6;border-color: #b35151d6">
                                         <a class="btn btn-outline-red" href="/view/summary/bonus">交易明细</a>
-                                        <button class="btn btn-outline-red" >提现</button>
+                                        <button class="btn btn-outline-red" data-toggle="modal" data-target="#withdrawModal">提现</button>
                                     </div>
-                                    <div th:unless="${roleId eq 3}" class="card-footer justify-content-end" style="background-color: #944545d6;border-color: #b35151d6">
+                                    <div th:if="${roleId eq 4}" class="card-footer justify-content-end" style="background-color: #944545d6;border-color: #b35151d6">
                                         <a class="btn btn-outline-red" href="/view/summary/bonus">交易明细</a>
                                     </div>
                                 </div>
@@ -145,6 +145,8 @@
     <div th:replace="module::alterModal"></div>
     <div th:replace="module::confirmModal"></div>
     <div th:replace="module::changePasswordModal"></div>
+    <div th:replace="module::withdrawModal(balance=${#numbers.formatDecimal(summary.balance/100.0,1,2)})"></div>
+
 
     <!-- jQuery -->
     <script src="/deepor/js/jquery.min.js"></script>
@@ -189,6 +191,9 @@
             var queryDate = date+' 至 '+date;
             var href = '/view/summary/bonus/bonus?queryDate='+queryDate;
             window.location.href = href;
+        }
+        function messageReload() {
+            window.location.href = "/view/summary/withdraw";
         }
     </script>
 </body>

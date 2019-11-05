@@ -30,10 +30,10 @@ public class ApplicationStart implements ApplicationListener<ApplicationReadyEve
         log.info("初始化角色路径对应菜单");
         systemCache.updateMenuCache();
 
-        log.info("佣金分配任务开始");
+        log.info("佣金分配任务已启动");
         bonusAllot.allot();
 
-        log.info("收益统计任务开始");
+        log.info("收益统计任务已启动");
         bonusStatistical.statistical();
     }
 

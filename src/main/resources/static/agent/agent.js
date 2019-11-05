@@ -125,7 +125,44 @@ function changePassword() {
         }
     });
 }
+function withdrawPost() {
+    var balanceAmount = $('#balanceAmount').text();
+    var withdrawAmount = $('#withdrawAmount').val();
+    var withdrawAccount = $('#withdrawAccount').val();
+    var withdrawName = $('#withdrawName').val();
+    var withdrawType = $('#withdrawType').val();
+    var withdrawRemark = $('#withdrawRemark').val();
+    withdrawAmount = Number(withdrawAmount);
+    balanceAmount = Number(balanceAmount);
+    if(typeof withdrawAmount != 'number'||withdrawAmount<=0){
+        alterToast("请输入正确的提现金额");
+        return;
+    }
+    if(withdrawAccount.length==0){
+        alterToast("请输入正确的账号");
+        return;
+    }
+    if(withdrawName.length==0){
+        alterToast("请输入真实姓名");
+        return;
+    }
+    if(withdrawAmount>balanceAmount){
+        alterToast("余额不足");
+        return;
+    }
+    var params = {account:withdrawAccount,name:withdrawName,type:withdrawType,amount:withdrawAmount,remark:withdrawRemark};
+    showLoading();
+    ajaxPost('/summary/add-withdraw',params,function (response) {
+        closeLoading();
+        if(response.code==0){
+            $('#withdrawModal').modal('hide');
+            alter("申请成功，订单号："+response.message);
+        }else {
+            alterToast(response.message);
+        }
+    })
 
+}
 function turnPage(pageNo) {
     var url = $('#viewSelect').val();
     url = url+'?pageNo='+pageNo;

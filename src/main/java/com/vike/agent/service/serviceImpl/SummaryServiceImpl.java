@@ -1,6 +1,7 @@
 package com.vike.agent.service.serviceImpl;
 
 import com.vike.agent.common.GloableConstant;
+import com.vike.agent.common.OrderHelp;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.dao.*;
 import com.vike.agent.entity.*;
@@ -46,6 +47,8 @@ public class SummaryServiceImpl implements SummaryService {
     BonusRepository bonusRepository;
     @Autowired
     StatisticalRepository statisticalRepository;
+    @Autowired
+    WithdrawRepository withdrawRepository;
     @Autowired
     SysUserRepository sysUserRepository;
     @Autowired
@@ -269,7 +272,83 @@ public class SummaryServiceImpl implements SummaryService {
             return statisticalRepository.findAll(specification,pageLimit.page());
         }
 
-        return new PageImpl<>(null);
+        return new PageImpl<>(new ArrayList<>());
+    }
+
+    @Override
+    @Transactional
+    public Withdraw saveWithdraw(SysUser sysUser, String account, String name, String type, int amount, String remark) {
+        Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
+        if(op.isPresent()){
+            Agent agent = op.get();
+            Withdraw withdraw = new Withdraw();
+            withdraw.setOrderNo(OrderHelp.createOrderNo()).setAgentId(agent.getId()).setAgentInfo(agent.getNickName()+"("+agent.getMobile()+")")
+                    .setAccount(account).setName(name).setType(type).setAmount(amount).setCharge(0).setBalance(agent.getAmount())
+                    .setRemark(remark).setStatus(1);
+            Withdraw save = withdrawRepository.save(withdraw);
+            return save;
+        }
+        return null;
+    }
+
+    @Override
+    public Page<Withdraw> findWithdraw(SysUser sysUser, String queryStr, int queryStatus, PageLimit pageLimit) {
+        long roleId = sysUser.getRole().getId();
+        Specification<Withdraw> specification = (Specification<Withdraw>)(r,q,b)->{
+            List<Predicate> list = new ArrayList<>();
+            if(roleId==GloableConstant.AGENT_LEVEL_FIRST){
+                Agent agent = agentRepository.findAgentBySysId(sysUser.getId()).get();
+                Path<Long> path = r.get("agentId");
+                list.add(b.equal(path,agent.getId()));
+            }
+            if(!StringUtils.isEmpty(queryStr)){
+                Path<String> accountPath = r.get("account");
+                Path<String> orderNoPath = r.get("orderNo");
+                list.add(b.or(b.equal(accountPath,queryStr),b.equal(orderNoPath,queryStr)));
+            }
+            if(queryStatus!=0){
+                Path<Integer> path = r.get("status");
+                list.add(b.equal(path,queryStatus));
+            }
+            Predicate [] predicates = new Predicate[list.size()];
+            q.where(b.and(list.toArray(predicates)));
+            q.orderBy(b.desc(r.get("createTime")));
+            return q.getRestriction();
+        };
+        return withdrawRepository.findAll(specification,pageLimit.page());
+    }
+
+    @Override
+    public String audit(long id, long auditId, int type, String remark) {
+        Optional<Withdraw> op = withdrawRepository.findById(id);
+        if(op.isPresent()){
+            Withdraw withdraw = op.get();
+            if(type==1){
+                Optional<Agent> op1 = agentRepository.findById(withdraw.getAgentId());
+                if(op1.isPresent()&&op1.get().getStatus()==GloableConstant.NORMALL_STATUS){
+                    Agent agent = op1.get();
+                    if(agent.getStatus()==GloableConstant.CANCEL_STATUS){
+                        return "账户异常";
+                    }
+                    if(agent.getAmount()<withdraw.getAmount()){
+                        return "余额不足";
+                    }
+                    agent.setAmount(agent.getAmount()-withdraw.getAmount());
+                    withdraw.setStatus(2);
+                    agentRepository.save(agent);
+                    withdrawRepository.save(withdraw);
+                }
+                return "账户异常";
+            }else if(type==2){
+                withdraw.setStatus(3);
+            }else {
+                return "参数错误";
+            }
+            withdraw.setAudit_id(auditId).setRemark(remark).setUpdateTime(new Date());
+            withdrawRepository.save(withdraw);
+            return null;
+        }
+        return "申请不存在";
     }
 
     private boolean checkAgentPermission(SysUser sysUser, Agent agent){

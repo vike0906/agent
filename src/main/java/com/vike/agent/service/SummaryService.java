@@ -1,10 +1,7 @@
 package com.vike.agent.service;
 
 import com.vike.agent.common.PageLimit;
-import com.vike.agent.entity.Agent;
-import com.vike.agent.entity.Bonus;
-import com.vike.agent.entity.Statistical;
-import com.vike.agent.entity.SysUser;
+import com.vike.agent.entity.*;
 import com.vike.agent.vo.SummaryVo;
 import org.springframework.data.domain.Page;
 
@@ -29,4 +26,10 @@ public interface SummaryService {
     SummaryVo summary(SysUser sysUser);
 
     Page<Statistical> statistical(SysUser sysUser, PageLimit pageLimit);
+
+    Withdraw saveWithdraw(SysUser sysUser,String account,String name, String type,int amount, String remark);
+
+    Page<Withdraw> findWithdraw(SysUser sysUser,String queryStr, int queryStatus,PageLimit pageLimit);
+
+    String audit(long id, long auditId, int type, String remark);
 }

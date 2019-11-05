@@ -25,7 +25,7 @@ public class PageLimit implements Serializable {
     /** 分页默认页 */
     public static final Integer DEFAULT_PAGE_NO = 1;
     /** 分页默认的每页条数 */
-    public static final Integer DEFAULT_LIMIT = 1;
+    public static final Integer DEFAULT_LIMIT = 10;
     /** 默认倒序 */
     public static final Sort.Direction DEFAULT_SORT_DIRECTION = Sort.Direction.DESC;
 

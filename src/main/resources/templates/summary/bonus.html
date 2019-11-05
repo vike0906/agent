@@ -9,9 +9,14 @@
             <section class="hk-sec-wrapper">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <form class="form-inline mt-2 mt-md-0 row col-lg-6 col-md-4 col-12">
-                        <div class="col-sm-12">
-                            <span><i style="font-size: 1.5rem;vertical-align: middle" class="fa fa-calendar"></i> </span>
-                            <input type="text" class="form-control" id="queryDate" placeholder="选择查询日期" th:value="${queryDate}" style="width: 14rem;vertical-align: middle">
+                        <!--<div class="col-sm-12">-->
+                            <!--<span><i style="font-size: 1.5rem;vertical-align: middle" class="fa fa-calendar"></i> </span>-->
+                            <!--<input type="text" class="form-control" id="queryDate" placeholder="选择查询日期" th:value="${queryDate}" style="width: 14rem;vertical-align: middle">-->
+                        <!--</div>-->
+                        <div id="reportrange" class="form-control text-truncate">
+                            <input type="text" class="form-control" id="queryDate" placeholder="选择查询日期" th:value="${queryDate}" style="width: 14rem;vertical-align: middle" hidden>
+                            <i class="fa fa-calendar text-light-40"></i>&nbsp;
+                            <span th:text="${queryDate}"></span> <i class="fa fa-caret-down text-light-40 font-12 ml-10"></i>
                         </div>
                     </form>
                     <form class="form-inline mt-2 mt-md-0">
@@ -61,7 +66,7 @@
     <script src="/deepor/js/moment.min.js"></script>
     <script src="/deepor/js/daterangepicker.js"></script>
     <script>
-        $('#queryDate').daterangepicker(
+        $('#reportrange').daterangepicker(
             {
                 autoUpdateInput: false,
                 startDate: moment(),
@@ -82,9 +87,10 @@
             }
         ).on('cancel.daterangepicker', function(ev, picker) {
             $("#queryDate").val("");
+            $('#reportrange span').html('请选择查询日期范围');
         }).on('apply.daterangepicker', function(ev, picker) {
             $('#queryDate').val(picker.startDate.format('YYYY-MM-DD')+" 至 "+picker.endDate.format('YYYY-MM-DD'));
-            //TODO 查询
+            $('#reportrange span').html(picker.startDate.format('YYYY-MM-DD')+" 至 "+picker.endDate.format('YYYY-MM-DD'));
             queryByDate();
         });
     </script>

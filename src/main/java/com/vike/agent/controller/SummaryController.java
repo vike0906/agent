@@ -4,6 +4,7 @@ import com.vike.agent.common.PageLimit;
 import com.vike.agent.common.Response;
 import com.vike.agent.entity.Agent;
 import com.vike.agent.entity.Bonus;
+import com.vike.agent.entity.Statistical;
 import com.vike.agent.entity.SysUser;
 import com.vike.agent.service.SummaryService;
 import com.vike.agent.service.SystemService;
@@ -52,7 +53,7 @@ public class SummaryController {
             calendar.setTimeInMillis(currentTimeMillis);
             calendar.add(Calendar.DATE,-7);
             calendar.getTime();
-            queryDate = sd.format(new Date(currentTimeMillis))+" 至 "+sd.format(calendar.getTime());
+            queryDate = sd.format(calendar.getTime())+" 至 "+sd.format(new Date(currentTimeMillis));
         }
         Page<Bonus> page = summaryService.findBonus(ShiroUtil.getUser(), queryStr, queryDate, pageLimit);
         map.put("page", page);
@@ -112,8 +113,16 @@ public class SummaryController {
         }
         return new Response(Response.SUCCESS,"修改成功");
     }
+
     @GetMapping("withdraw")
     public String withdraw(){
         return "summary/withdraw::withdraw";
+    }
+
+    @GetMapping("statistical")
+    public String statistical(ModelMap map, PageLimit pageLimit){
+        Page<Statistical> page = summaryService.statistical(ShiroUtil.getUser(), pageLimit);
+        map.addAttribute("page", page);
+        return "summary/statistical::statistical";
     }
 }

@@ -9,6 +9,7 @@
         <div id="hk_nav_backdrop" class="hk-nav-backdrop"></div>
         <!-- Main Content -->
         <div class="hk-pg-wrapper">
+            <div th:replace="module::loading-b"></div>
 			<!-- Container -->
             <div class="container-fluid mt-xl-50 mt-sm-30 mt-15">
                 <!-- Row -->
@@ -26,14 +27,17 @@
                                     <div class="card-body">
                                         <div class="card-title"><span>总额:</span></div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
-                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.balance/100.0,1,2)}+' 元'"></span></span>
+                                            <span class="d-block display-5 mb-4" style="margin-top: 1rem"><i class="ion-logo-yen" style="font-size: 1.7rem;"></i>
+                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.balance/100.0,1,2)}"></span></span>
                                             <!--<small class="d-block">35次分佣</small>-->
                                         </div>
                                     </div>
-                                    <div class="card-footer justify-content-between" style="background-color: #944545d6;border-color: #b35151d6">
-                                        <button class="btn btn-outline-red">交易明细</button>
-                                        <button class="btn btn-outline-red">提现</button>
+                                    <div th:if="${roleId eq 3}" class="card-footer justify-content-between" style="background-color: #944545d6;border-color: #b35151d6">
+                                        <a class="btn btn-outline-red" href="/view/summary/bonus">交易明细</a>
+                                        <button class="btn btn-outline-red" >提现</button>
+                                    </div>
+                                    <div th:unless="${roleId eq 3}" class="card-footer justify-content-end" style="background-color: #944545d6;border-color: #b35151d6">
+                                        <a class="btn btn-outline-red" href="/view/summary/bonus">交易明细</a>
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +57,7 @@
                                             <!--</div>-->
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen" style="font-size: 1.7rem;"></i>
                                                 <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.todayAmount/100.0,1,2)}"></span></span>
                                             <small class="d-block" th:text="' '+${summary.todayBonus}+'次分佣'"></small>
                                         </div>
@@ -69,9 +73,9 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen" style="font-size: 1.7rem;"></i>
                                                 <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.lastDayAmount/100.0,1,2)}"></span></span>
-                                            <small class="d-block" th:text="' '+${summary.todayBonus}+'次分佣'"></small>
+                                            <small class="d-block" th:text="' '+${summary.lastDayBonus}+'次分佣'"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -85,7 +89,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen" style="font-size: 1.7rem;"></i>
                                                 <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.monthAmount/100.0,1,2)}"></span></span>
                                             <small class="d-block" th:text="' '+${summary.monthBonus}+'次分佣'"></small>
                                         </div>
@@ -101,9 +105,9 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
-                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.monthAmount/100.0,1,2)}"></span></span>
-                                            <small class="d-block" th:text="' '+${summary.monthBonus}+'次分佣'"></small>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen" style="font-size: 1.7rem;"></i>
+                                                <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.lastMonthAmount/100.0,1,2)}"></span></span>
+                                            <small class="d-block" th:text="' '+${summary.lastMonthBonus}+'次分佣'"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +121,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen"></i>
+                                            <span class="d-block display-5 text-dark mb-4" style="margin-top: 1rem"><i class="ion-logo-yen" style="font-size: 1.7rem;"></i>
                                                 <span class="counter-anim" th:text="' '+${#numbers.formatDecimal(summary.totalAmount/100.0,1,2)}"></span></span>
                                             <small class="d-block" th:text="' '+${summary.totalBonus}+'次分佣'"></small>
                                         </div>
@@ -128,57 +132,7 @@
                     </div>
                 </div>
                 <!-- /Row -->
-                <div class="hk-row">
-                    <div class="col-12">
-                        <h6>收益流水</h6>
-                        <hr>
-                        <section class="hk-sec-wrapper">
-
-                            <div class="table-wrap">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover">
-                                        <caption>按日统计</caption>
-                                        <thead class="thead-light">
-                                        <tr>
-                                            <th>日期</th>
-                                            <th>分佣金额</th>
-                                            <th>总额</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>2019-10-31</td>
-                                            <td>888.66</td>
-                                            <td>888.66</td>
-                                            <td align="center"><a class="btn btn-light btn-sm"><i class="ion-ios-paper"></i><span> 查看明细</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2019-10-30</td>
-                                            <td>888.66</td>
-                                            <td>888.66</td>
-                                            <td align="center"><a class="btn btn-light btn-sm"><i class="ion-ios-paper"></i><span> 查看明细</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2019-10-29</td>
-                                            <td>888.66</td>
-                                            <td>888.66</td>
-                                            <td align="center"><a class="btn btn-light btn-sm"><i class="ion-ios-paper"></i><span> 查看明细</span></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2019-10-28</td>
-                                            <td>888.66</td>
-                                            <td>888.66</td>
-                                            <td align="center"><a class="btn btn-light btn-sm"><i class="ion-ios-paper"></i><span> 查看明细</span></a></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div th:replace="module::page(total=1,number=1)"></div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
+                <div id="statistical"></div>
             </div>
             <!-- /Container -->
 			
@@ -216,6 +170,27 @@
     <!-- Init JavaScript -->
     <script src="/deepor/js/init.js"></script>
     <script src="/agent/agent.js"></script>
+    <script>
+        window.onload=function(){
+            var url = '/summary/statistical';
+            ajaxGet(url,function (response) {
+                $("#statistical").html(response);
+            });
+        };
+        function turnPage(pageNo) {
+            var url = '/summary/statistical';
+            url = url+'?pageNo='+pageNo;
+            ajaxGet(url,function (response) {
+                $("#statistical").html(response);
+            });
+        }
+        function queryBonus(id) {
+            var date = $('#'+id).val();
+            var queryDate = date+' 至 '+date;
+            var href = '/view/summary/bonus/bonus?queryDate='+queryDate;
+            window.location.href = href;
+        }
+    </script>
 </body>
 
 </html>

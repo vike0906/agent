@@ -3,6 +3,7 @@ package com.vike.agent.service;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.entity.Agent;
 import com.vike.agent.entity.Bonus;
+import com.vike.agent.entity.Statistical;
 import com.vike.agent.entity.SysUser;
 import com.vike.agent.vo.SummaryVo;
 import org.springframework.data.domain.Page;
@@ -26,4 +27,6 @@ public interface SummaryService {
     Page<Bonus> findBonus(SysUser sysUser, String queryStr, String queryDate, PageLimit pageLimit);
 
     SummaryVo summary(SysUser sysUser);
+
+    Page<Statistical> statistical(SysUser sysUser, PageLimit pageLimit);
 }

@@ -130,11 +130,11 @@ function turnPage(pageNo) {
     var url = $('#viewSelect').val();
     url = url+'?pageNo='+pageNo;
     var queryStr = $('#queryStr').val();
-    if(queryStr instanceof String &&queryStr.length>0){
+    if(typeof queryStr == 'string' &&queryStr.length>0){
         url = url+'&queryStr='+queryStr;
     }
     var queryDate = $('#queryDate').val();
-    if(queryDate instanceof String && queryDate.length>0){
+    if(typeof queryDate == 'string' && queryDate.length>0){
         url = url+'&queryDate='+queryDate;
     }
     indexView(url);

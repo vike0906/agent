@@ -7,6 +7,7 @@
 
     <!-- Main Content -->
     <div class="hk-pg-wrapper hk-auth-wrapper">
+        <div th:replace="module::loading-b"></div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-12 pa-0">
@@ -89,6 +90,7 @@
             timeout: 10000,
             success: success,
             complete: function (xhr, status) {
+                $(".loading").css('display','none');
                 if(status=='timeout'){
                     alter('请求超时');
                 }
@@ -109,7 +111,8 @@
             alter('请输入密码');
             return;
         }
-        var params = {loginName:loginName, password:password}
+        var params = {loginName:loginName, password:password};
+        $(".loading").css('display','block');
         ajaxPost('/user/login',params,function (response) {
             if(response.code==0){
                 window.location.href="/index";

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div  th:fragment="statistical" class="hk-row">
+    <div class="col-12">
+        <h6>分佣流水</h6>
+        <hr>
+        <section class="hk-sec-wrapper">
+
+            <div class="table-wrap">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <caption>按日统计</caption>
+                        <thead class="thead-light">
+                        <tr>
+                            <th>日期</th>
+                            <th>征信业务</th>
+                            <th>总额</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${page.content.size()>0}" th:each="statis,state : ${page.content}">
+                            <td th:text="${#dates.format(statis.staDate,'yyyy-MM-dd')}"></td>
+                            <td th:text="${#numbers.formatDecimal(statis.wxAmount/100.0,1,2)}"></td>
+                            <td th:text="${#numbers.formatDecimal(statis.totalAmount/100.0,1,2)}"></td>
+                            <td align="center">
+                                <input type="hidden" th:value="${#dates.format(statis.staDate,'yyyy-MM-dd')}" th:id="${statis.id}">
+                                <a class="btn btn-light btn-sm" th:onclick="'queryBonus('+${statis.id}+')'">
+                                <i class="ion-ios-paper"></i><span> 查看明细</span></a>
+                            </td>
+                        </tr>
+                        <tr th:if="${page.content.size()==0}" align="center" ><td colspan="7">暂无数据</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:replace="module::page(total=${page.getTotalPages()},number=${page.getNumber()}+1)"></div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>

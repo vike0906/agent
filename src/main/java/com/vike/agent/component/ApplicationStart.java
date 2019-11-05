@@ -19,6 +19,8 @@ public class ApplicationStart implements ApplicationListener<ApplicationReadyEve
     SystemCache systemCache;
     @Autowired
     BonusAllot bonusAllot;
+    @Autowired
+    BonusStatistical bonusStatistical;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
@@ -28,8 +30,11 @@ public class ApplicationStart implements ApplicationListener<ApplicationReadyEve
         log.info("初始化角色路径对应菜单");
         systemCache.updateMenuCache();
 
-        log.info("开始分配佣金");
+        log.info("佣金分配任务开始");
         bonusAllot.allot();
+
+        log.info("收益统计任务开始");
+        bonusStatistical.statistical();
     }
 
 }

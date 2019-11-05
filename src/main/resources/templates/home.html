@@ -14,6 +14,7 @@
             <div class="container-fluid mt-xl-50 mt-sm-30 mt-15">
                 <!-- Row -->
                 <input id="viewSelect" th:value="${url}" hidden="hidden">
+                <input id="params" th:value="${params}" hidden="hidden">
                 <div id="homeView" class="row"></div>
                 <!-- /Row -->
             </div>
@@ -57,6 +58,11 @@
 <script>
     window.onload=function(){
         var url = $('#viewSelect').val();
+        var params = $('#params').val();
+        if(typeof params=='string'&&params.length>0){
+            url = url+'?'+params
+            $('#params').val('');
+        }
         if(url.length!=0){
             indexView(url);
         }

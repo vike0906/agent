@@ -51,6 +51,7 @@ public class ViewController {
         List<SysPermission> menus = SystemCache.MENU_CACHE.get(user.getRole().getName());
         SummaryVo summary = summaryService.summary(ShiroUtil.getUser());
         map.addAttribute("userName",user.getName());
+        map.addAttribute("roleId",user.getRole().getId());
         map.addAttribute("menus",menus);
         map.addAttribute("summary",summary);
         return "index";
@@ -104,7 +105,6 @@ public class ViewController {
 
     @GetMapping("view/{url1}/{url2}")
     public String view(ModelMap map, @PathVariable String url1, @PathVariable String url2){
-        //TODO 获取当前用户拥有的菜单，然后筛选当前菜单
         String url = "/"+url1+"/"+url2;
         SysUser user = ShiroUtil.getUser();
         List<SysPermission> menus = SystemCache.MENU_CACHE.get(user.getRole().getName()+url);
@@ -123,6 +123,19 @@ public class ViewController {
         map.addAttribute("menus",menus);
         map.addAttribute("summary",summary);
         return "index";
+    }
+
+    @GetMapping("/view/summary/bonus/bonus")
+    public String summaryBonus(ModelMap map,String queryDate){
+        String url = "/summary/bonus";
+        SysUser user = ShiroUtil.getUser();
+        List<SysPermission> menus = SystemCache.MENU_CACHE.get(user.getRole().getName()+url);
+        map.addAttribute("url",url);
+        map.addAttribute("params","queryDate="+queryDate);
+        map.addAttribute("userName",user.getName());
+        map.addAttribute("roleId",user.getRole().getId());
+        map.addAttribute("menus",menus);
+        return "home";
     }
 
 }

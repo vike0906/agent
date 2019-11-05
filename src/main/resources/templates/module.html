@@ -160,7 +160,7 @@
         <li class="page-item" th:classappend="${number==1}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}-1)+')'" >上一页</a></li>
         <li class="page-item" th:if="${total gt 0}" th:each="i:${#numbers.sequence(1,total)}" th:classappend="${number==i}?'active disabled'"><a class="page-link" th:onclick="'turnPage('+${i}+')'" th:text="${i}"></a></li>
         <li class="page-item disabled" th:unless="${total gt 0}"><a class="page-link">1</a></li>
-        <li class="page-item" th:classappend="${number==total||total le 0}?'disabled'"><a class="page-link" th:onclick="'turnPage('+${number}+1+')'">下一页</a></li>
+        <li class="page-item" th:classappend="${number==total||total le 0}?'disabled'"><a class="page-link" th:onclick="'turnPage('+(${number}+1)+')'">下一页</a></li>
     </ul>
     <div th:unless="${total lt 7}">
         <ul class="pagination justify-content-end" th:if="${number lt 3}">

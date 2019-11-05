@@ -2,10 +2,7 @@ package com.vike.agent.service.serviceImpl;
 
 import com.vike.agent.common.GloableConstant;
 import com.vike.agent.common.PageLimit;
-import com.vike.agent.dao.AgentRepository;
-import com.vike.agent.dao.BonusRepository;
-import com.vike.agent.dao.SysRoleRepository;
-import com.vike.agent.dao.SysUserRepository;
+import com.vike.agent.dao.*;
 import com.vike.agent.entity.*;
 import com.vike.agent.service.SummaryService;
 import com.vike.agent.utils.EncryptUtils;
@@ -14,6 +11,7 @@ import com.vike.agent.vo.SummaryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +44,8 @@ public class SummaryServiceImpl implements SummaryService {
     AgentRepository agentRepository;
     @Autowired
     BonusRepository bonusRepository;
+    @Autowired
+    StatisticalRepository statisticalRepository;
     @Autowired
     SysUserRepository sysUserRepository;
     @Autowired
@@ -215,29 +216,60 @@ public class SummaryServiceImpl implements SummaryService {
 
     @Override
     public SummaryVo summary(SysUser sysUser) {
+        return new SummaryVo(898900,80000,50,100000,88,556300,352,556300,352,85256300,4180);
+//        long roleId = sysUser.getRole().getId();
+//        if(roleId==GloableConstant.AGENT_LEVEL_SECOND){
+//            Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
+//            if(op.isPresent()){
+//                Agent agent = op.get();
+//                String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where agent_id = "+agent.getId();
+//                return vo(agent.getAmount(), totalSql);
+//            }
+//        }else if(roleId==GloableConstant.AGENT_LEVEL_FIRST){
+//            Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
+//            if(op.isPresent()){
+//                Agent agent = op.get();
+//                String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where parent_agent_id = "+agent.getId();
+//                return vo(agent.getAmount(), totalSql);
+//            }
+//        }else {
+//            String amountSql = "select IFNULL(sum(amount),0) amount from se_bonus where parent_agent_id = 0 ";
+//            Query nativeQuery = entityManager.createNativeQuery(amountSql);
+//            BigDecimal amount = (BigDecimal)nativeQuery.getSingleResult();
+//            String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where parent_agent_id = 0 ";
+//            return vo(amount.intValue(), totalSql);
+//        }
+//        return new SummaryVo(0,0,0,0,0,0,0,0,0,0,0);
+    }
+
+    @Override
+    public Page<Statistical> statistical(SysUser sysUser, PageLimit pageLimit) {
         long roleId = sysUser.getRole().getId();
-        if(roleId==GloableConstant.AGENT_LEVEL_SECOND){
-            Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
-            if(op.isPresent()){
-                Agent agent = op.get();
-                String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where agent_id = "+agent.getId();
-                return vo(agent.getAmount(), totalSql);
-            }
-        }else if(roleId==GloableConstant.AGENT_LEVEL_FIRST){
-            Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
-            if(op.isPresent()){
-                Agent agent = op.get();
-                String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where parent_agent_id = "+agent.getId();
-                return vo(agent.getAmount(), totalSql);
-            }
-        }else {
-            String amountSql = "select IFNULL(sum(amount),0) amount from se_bonus where parent_agent_id = 0 ";
-            Query nativeQuery = entityManager.createNativeQuery(amountSql);
-            Long amount = (Long)nativeQuery.getSingleResult();
-            String totalSql = "select IFNULL(sum(amount),0) amount, IFNULL(count(id),0) count from se_bonus where parent_agent_id = 0 ";
-            return vo(amount.intValue(), totalSql);
+        if(roleId==GloableConstant.AGENT_LEVEL_FIRST||roleId==GloableConstant.AGENT_LEVEL_SECOND){
+            Specification<Statistical> specification = (Specification<Statistical>)(root,query,builder)->{
+                Path<Object> path = root.get("agentId");
+                Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
+                op.ifPresent(agent -> query.where(builder.equal(path, agent.getId())));
+                if(op.isPresent()){
+                    query.where(builder.equal(path, op.get().getId()));
+                }else {
+                    query.where(builder.equal(path, -1L));
+                }
+                query.orderBy(builder.desc(root.get("createTime")));
+                return query.getRestriction();
+            };
+            return statisticalRepository.findAll(specification,pageLimit.page());
+        }else if(roleId==GloableConstant.ADMIN_ID||roleId==GloableConstant.OP_ID){
+            Specification<Statistical> specification = (Specification<Statistical>)(root,query,builder)->{
+                Path<Object> path = root.get("agentId");
+                query.where(builder.equal(path, 0L));
+                query.orderBy(builder.desc(root.get("createTime")));
+                return query.getRestriction();
+            };
+            return statisticalRepository.findAll(specification,pageLimit.page());
         }
-        return null;
+
+        return new PageImpl<>(null);
     }
 
     private boolean checkAgentPermission(SysUser sysUser, Agent agent){

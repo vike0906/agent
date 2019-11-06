@@ -16,20 +16,21 @@ spring:
     database: MYSQL
     hibernate:
       ddl-auto: update
-      use_query_cache: false
+      use_query_cache: true
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true
 
   thymeleaf:
-    cache: false
+    cache: true
     encoding: UTF-8
     suffix: .html
     prefix: classpath:/templates/
 
 logging:
-  config: classpath:logs/dev.xml
+  config: classpath:logs/pro.xml
 
 system:
   loginTimeOut: 1800
   queryUrl: http://zhengxincahxunlianjie/index
-  allotRefreshTime: 3600
+  allotRefreshTime: 600

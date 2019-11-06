@@ -1,10 +1,5 @@
 server:
   port: 8083
 spring:
-  thymeleaf:
-    cache: false
-    encoding: UTF-8
-    suffix: .html
-    prefix: classpath:/templates/
   profiles:
-    active: dev
+    active: pro

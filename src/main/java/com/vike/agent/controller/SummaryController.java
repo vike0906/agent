@@ -1,5 +1,6 @@
 package com.vike.agent.controller;
 
+import com.vike.agent.common.BusinessException;
 import com.vike.agent.common.GloableConstant;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.common.Response;
@@ -16,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -140,26 +142,26 @@ public class SummaryController {
         SysUser user = ShiroUtil.getUser();
         if(user.getRole().getId()!=GloableConstant.AGENT_LEVEL_FIRST) return new Response(Response.ERROR,"仅一级代理可申请提现");
         amount = amount*100;
-        Withdraw withdraw = summaryService.saveWithdraw(user, account, name, type, amount.intValue(), remark);
-        if(withdraw!=null){
+        try {
+            Withdraw withdraw = summaryService.saveWithdraw(user, account, name, type, amount.intValue(), remark);
             return new Response(Response.SUCCESS, withdraw.getOrderNo());
+        }catch (BusinessException e){
+            return new Response(Response.ERROR,e.getMessage());
         }
-
-        return new Response(Response.ERROR,"申请失败");
     }
 
     @PostMapping("audit-withdraw")
     @ResponseBody
     public Response addWithdraw(@RequestParam Long id, @RequestParam Integer type, @RequestParam String remark){
         SysUser user = ShiroUtil.getUser();
-        if(user.getRole().getId()!=GloableConstant.ADMIN_ID||user.getRole().getId()!=GloableConstant.OP_ID) {
+        if(user.getRole().getId()!=GloableConstant.ADMIN_ID && user.getRole().getId()!=GloableConstant.OP_ID) {
             return new Response(Response.ERROR,"权限不足");
         }
         String audit = summaryService.audit(id, user.getId(), type, remark);
-        if(audit!=null){
+        if(audit==null){
             return new Response(Response.SUCCESS,"审核成功");
         }
-        return new Response(Response.ERROR,audit);
+        return new Response(Response.ERROR, audit);
     }
 
     @GetMapping("statistical")

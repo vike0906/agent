@@ -1,5 +1,6 @@
 package com.vike.agent.service;
 
+import com.vike.agent.common.BusinessException;
 import com.vike.agent.common.PageLimit;
 import com.vike.agent.entity.*;
 import com.vike.agent.vo.SummaryVo;
@@ -27,7 +28,7 @@ public interface SummaryService {
 
     Page<Statistical> statistical(SysUser sysUser, PageLimit pageLimit);
 
-    Withdraw saveWithdraw(SysUser sysUser,String account,String name, String type,int amount, String remark);
+    Withdraw saveWithdraw(SysUser sysUser,String account,String name, String type,int amount, String remark) throws BusinessException;
 
     Page<Withdraw> findWithdraw(SysUser sysUser,String queryStr, int queryStatus,PageLimit pageLimit);
 

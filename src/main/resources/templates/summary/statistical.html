@@ -8,11 +8,10 @@
         <h6>分佣流水</h6>
         <hr>
         <section class="hk-sec-wrapper">
-
             <div class="table-wrap">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover">
-                        <caption>按日统计</caption>
+                        <caption th:text="'按日统计（共'+${page.getTotalElements()}+'条记录）'"></caption>
                         <thead class="thead-light">
                         <tr>
                             <th>日期</th>

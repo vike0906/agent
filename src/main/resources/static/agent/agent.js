@@ -174,6 +174,10 @@ function turnPage(pageNo) {
     if(typeof queryDate == 'string' && queryDate.length>0){
         url = url+'&queryDate='+queryDate;
     }
+    var queryType = $('#queryType').val();
+    if(typeof queryType == 'string' && queryType.length>0){
+        url = url+'&queryType='+queryType;
+    }
     indexView(url);
 }
 

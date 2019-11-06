@@ -165,3 +165,60 @@ function searchBonus() {
     }
     indexView(url);
 }
+
+function searchWithdraw() {
+    var url = $('#viewSelect').val();
+    var queryStr = $('#queryStr').val();
+    var queryType = $('#queryType').val();
+    url = url+'?queryStr='+queryStr;
+    if(queryType.length>0){
+        url = url+'&queryType='+Number(queryType);
+    }
+    indexView(url);
+}
+
+function queryWithdrawByType() {
+    var url = $('#viewSelect').val();
+    var queryType = $('#queryType').val();
+    var queryStr = $('#queryStr').val();
+    url = url+'?queryType='+Number(queryType);
+    if(queryStr.length>0){
+        url = url+'&queryStr='+queryStr;
+    }
+    indexView(url);
+}
+
+function auditWithdraw(id) {
+    var auditWithdrawParams = $('#auditWithdrawParams');
+    var no = auditWithdrawParams.attr('no');
+    var info = auditWithdrawParams.attr('info');
+    var account = auditWithdrawParams.attr('account');
+    var name = auditWithdrawParams.attr('name');
+    var amount = auditWithdrawParams.attr('amount');
+
+    $('#orderNoModal').text(no);
+    $('#agentInfoModal').text(info);
+    $('#accountModal').text(account);
+    $('#nameModal').text(name);
+    $('#amountModal').text(amount);
+    $('#auditIdModal').val(id);
+
+    $('#auditWithdrawModal').modal('show');
+}
+
+function auditWithdrawPost() {
+    var id = $('#auditIdModal').val();
+    var type = $('#auditResultModal').val();
+    var remark = $('#auditRemarkModal').val();
+    var params = {id:Number(id),type:Number(type),remark:remark};
+    showLoading();
+    ajaxPost('/summary/audit-withdraw',params,function (response) {
+        if(response.code==0){
+            $('#auditWithdrawModal').modal('hide');
+            alter(response.message);
+        }else {
+            alterToast(response.message);
+        }
+
+    })
+}

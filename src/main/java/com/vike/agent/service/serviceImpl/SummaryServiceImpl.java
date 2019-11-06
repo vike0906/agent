@@ -1,5 +1,6 @@
 package com.vike.agent.service.serviceImpl;
 
+import com.vike.agent.common.BusinessException;
 import com.vike.agent.common.GloableConstant;
 import com.vike.agent.common.OrderHelp;
 import com.vike.agent.common.PageLimit;
@@ -277,18 +278,22 @@ public class SummaryServiceImpl implements SummaryService {
 
     @Override
     @Transactional
-    public Withdraw saveWithdraw(SysUser sysUser, String account, String name, String type, int amount, String remark) {
+    public Withdraw saveWithdraw(SysUser sysUser, String account, String name, String type, int amount, String remark) throws BusinessException {
         Optional<Agent> op = agentRepository.findAgentBySysId(sysUser.getId());
         if(op.isPresent()){
             Agent agent = op.get();
+            if(agent.getAmount()<amount) throw new BusinessException("账户余额不足");
+            int i = agentRepository.subtractAmount(agent.getId(), amount);
+            if(i!=1) throw new BusinessException("账户余额更新失败");
             Withdraw withdraw = new Withdraw();
             withdraw.setOrderNo(OrderHelp.createOrderNo()).setAgentId(agent.getId()).setAgentInfo(agent.getNickName()+"("+agent.getMobile()+")")
-                    .setAccount(account).setName(name).setType(type).setAmount(amount).setCharge(0).setBalance(agent.getAmount())
+                    .setAccount(account).setName(name).setType(type).setAmount(amount).setCharge(0).setBalance(agent.getAmount()-amount)
                     .setRemark(remark).setStatus(1);
             Withdraw save = withdrawRepository.save(withdraw);
             return save;
+        }else {
+            throw new BusinessException("账户异常");
         }
-        return null;
     }
 
     @Override
@@ -319,31 +324,32 @@ public class SummaryServiceImpl implements SummaryService {
     }
 
     @Override
+    @Transactional
     public String audit(long id, long auditId, int type, String remark) {
         Optional<Withdraw> op = withdrawRepository.findById(id);
         if(op.isPresent()){
             Withdraw withdraw = op.get();
-            if(type==1){
-                Optional<Agent> op1 = agentRepository.findById(withdraw.getAgentId());
-                if(op1.isPresent()&&op1.get().getStatus()==GloableConstant.NORMALL_STATUS){
-                    Agent agent = op1.get();
+            if(withdraw.getStatus()!=1) return "订单状态异常";
+            Optional<Agent> op1 = agentRepository.findById(withdraw.getAgentId());
+            if(op1.isPresent()){
+                Agent agent = op1.get();
+                if(type==1){
                     if(agent.getStatus()==GloableConstant.CANCEL_STATUS){
-                        return "账户异常";
+                        return "账户已被禁用";
                     }
-                    if(agent.getAmount()<withdraw.getAmount()){
-                        return "余额不足";
-                    }
-                    agent.setAmount(agent.getAmount()-withdraw.getAmount());
                     withdraw.setStatus(2);
-                    agentRepository.save(agent);
                     withdrawRepository.save(withdraw);
+                }else if(type==2){
+                    /**拒绝，申请提现时扣除的余额退回账户*/
+                    agentRepository.addAmount(agent.getId(),withdraw.getAmount());
+                    withdraw.setStatus(3);
+                }else {
+                    return "参数错误";
                 }
-                return "账户异常";
-            }else if(type==2){
-                withdraw.setStatus(3);
             }else {
-                return "参数错误";
+                return "账户异常";
             }
+
             withdraw.setAudit_id(auditId).setRemark(remark).setUpdateTime(new Date());
             withdrawRepository.save(withdraw);
             return null;

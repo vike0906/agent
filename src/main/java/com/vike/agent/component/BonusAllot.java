@@ -96,7 +96,7 @@ public class BonusAllot {
             int amountSubRatio = (amountParentRatio*agent.getRatio())/100;
 
             //分配一级代理佣金并记录
-            agentRepository.updateAgentAddAmount(agentParent.getId(), amountParentRatio);//一级代理
+            agentRepository.addAmount(agentParent.getId(), amountParentRatio);//一级代理
             Bonus bonusParent = new Bonus();
             bonusParent.setAgentId(agentParent.getId()).setParentAgentId(0L).setAgentMobile(agentParent.getMobile())
                     .setAgentTag(order.getAgentTag()).setClientName(order.getName()).setClientMobile(order.getMobile())
@@ -104,7 +104,7 @@ public class BonusAllot {
             bonusRepository.save(bonusParent);
 
             //分配二级代理佣金并记录
-            agentRepository.updateAgentAddAmount(agent.getId(), amountSubRatio);//二级代理
+            agentRepository.addAmount(agent.getId(), amountSubRatio);//二级代理
             Bonus bonus = new Bonus();
             bonus.setAgentId(agent.getId()).setParentAgentId(agentParent.getId()).setAgentMobile(agent.getMobile())
                     .setAgentTag(order.getAgentTag()).setClientName(order.getName()).setClientMobile(order.getMobile())

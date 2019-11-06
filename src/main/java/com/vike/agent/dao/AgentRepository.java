@@ -26,9 +26,9 @@ public interface AgentRepository extends JpaRepository<Agent,Long>, JpaSpecifica
 
     @Query(value = "update se_agent set amount = amount + ?2 where id = ?1",nativeQuery = true)
     @Modifying
-    void updateAgentAddAmount(long id, int change);
+    void addAmount(long id, int change);
 
-    @Query(value = "update se_agent set amount = amount - ?2 where id = ?1",nativeQuery = true)
+    @Query(value = "update se_agent set amount = amount - ?2 where id = ?1 and amount>=?2",nativeQuery = true)
     @Modifying
-    void updateAgentSubtractAmount(long id, int change);
+    int subtractAmount(long id, int change);
 }

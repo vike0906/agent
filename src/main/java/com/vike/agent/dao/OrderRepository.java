@@ -3,7 +3,6 @@ package com.vike.agent.dao;
 import com.vike.agent.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.List;
 
@@ -13,6 +12,5 @@ import java.util.List;
  */
 public interface OrderRepository extends JpaRepository<Order,Long>, JpaSpecificationExecutor<Order> {
 
-    @Modifying(clearAutomatically = true)
     List<Order> findOrdersByBonusStatusOrderByCreateTimeDesc(int bonusStatus);
 }
